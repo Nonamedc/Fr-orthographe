@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060c18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Français Posé 📚</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="toast"></div>
+<div id="ctm-bar"></div>
+
+<!-- ══════════════════════════════════════ HOME ══ -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="logo-area">
+      <h1 class="display">📚 Français Posé</h1>
+      <div class="sub">Grammaire &amp; Conjugaison · CP → Terminale</div>
+    </div>
+    <div class="hdr-btns">
+      <button class="icon-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+    </div>
+  </div>
+
+  <div class="sect">Profils</div>
+  <div class="profiles-wrap" id="profiles-wrap"></div>
+
+  <div id="rev-banner" class="rev-banner" onclick="startRevision()">
+    <div class="rev-icon">🔁</div>
+    <div class="rev-text">
+      <div class="rt" id="rev-title">Réviser les erreurs</div>
+      <div class="rs" id="rev-sub">Questions à retravailler</div>
+    </div>
+    <button class="rev-cta">Réviser →</button>
+  </div>
+
+  <div class="sect">Niveau scolaire</div>
+  <div class="lvl-row" id="lvl-row"></div>
+
+  <div class="sect">Exercice</div>
+  <div class="ex-grid" id="ex-grid"></div>
+
+  <div class="sect">Options</div>
+  <div class="opts-box">
+    <div class="opt-row">
+      <span class="opt-lbl">Questions</span>
+      <div class="opt-btns" id="opt-q">
+        <button class="opb on" onclick="setOpt('q',5,this)">5</button>
+        <button class="opb" onclick="setOpt('q',10,this)">10</button>
+        <button class="opb" onclick="setOpt('q',20,this)">20</button>
+        <button class="opb" onclick="setOpt('q',0,this)">∞</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Chrono</span>
+      <div class="opt-btns" id="opt-c">
+        <button class="opb on" onclick="setOpt('c','libre',this)">Libre</button>
+        <button class="opb" onclick="setOpt('c','30',this)">⚡ 30s</button>
+        <button class="opb" onclick="setOpt('c','60',this)">⚡ 60s</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Niveaux</span>
+      <div class="opt-btns">
+        <button class="opb on" id="opt-rnd" onclick="rndLvl()">🎲 Aléatoire</button>
+        <button class="opb" onclick="allLvls()">Tout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nouveau profil -->
+<div class="overlay" id="prof-modal" onclick="if(event.target===this)closeProfModal()">
+  <div class="modal">
+    <h2>Nouveau profil</h2>
+    <input type="text" id="pname-inp" placeholder="Ton prénom" maxlength="14"
+      onkeydown="if(event.key==='Enter')saveProfModal()">
+    <div class="av-grid" id="av-grid"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeProfModal()">Annuler</button>
+      <button class="btn-go" onclick="saveProfModal()">Créer ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Paramètres -->
+<div class="overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h2>⚙️ Paramètres</h2>
+    <label class="set-lbl">Aide IA — Clé API Anthropic</label>
+    <div class="hint-txt">Entre ta clé API pour obtenir des explications après chaque erreur. Elle est stockée uniquement sur ton appareil.</div>
+    <div class="key-row">
+      <input type="password" id="api-key-inp" placeholder="sk-ant-…">
+      <button onclick="saveKey()">OK</button>
+    </div>
+    <label class="set-lbl" style="margin-top:8px">Supprimer un profil</label>
+    <div id="del-prof-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeSettings()">Fermer</button>
+      <button class="btn-danger" onclick="nukeAll()">Tout effacer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Explication IA -->
+<div class="overlay" id="ai-modal" onclick="if(event.target===this)closeAI()">
+  <div class="modal ai-modal">
+    <div class="ai-head"><span>🤖</span><h3>Explication</h3></div>
+    <div class="ai-content" id="ai-content">
+      <div class="ai-spinner"><div class="spinner-ring"></div>Analyse en cours…</div>
+    </div>
+    <button class="ai-close-btn" onclick="closeAI()">Compris ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ GAME ══ -->
+<div id="game" class="screen">
+  <div class="game-top">
+    <div class="g-label" id="g-label"></div>
+    <div class="g-chips">
+      <div class="xp-pill" id="xp-pill">+0 XP</div>
+      <div class="combo-pill" id="combo-pill">🔥 ×2</div>
+    </div>
+  </div>
+  <div class="ctm-row" id="ctm-row">
+    <div class="ctm-disp">⏱ <span id="ctm-n">30</span>s</div>
+  </div>
+  <div class="prog-row">
+    <div class="dots" id="dots"></div>
+    <div class="prog-txt" id="prog-txt"></div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card" id="q-card">
+      <div class="q-type" id="q-type"></div>
+      <div class="q-main" id="q-main"></div>
+      <div class="q-hint" id="q-hint"></div>
+    </div>
+  </div>
+  <div class="fb" id="fb"></div>
+  <div class="ch-grid" id="ch-grid"></div>
+  <div class="dictee-zone" id="dictee-zone">
+    <div class="dictee-listen">
+      <button class="btn-listen" id="btn-listen" onclick="speakDictee()">🔊 Écouter la phrase</button>
+      <button class="btn-listen-again" id="btn-relisten" style="display:none" onclick="speakDictee()">🔁</button>
+    </div>
+    <div class="accents-bar" id="accents-bar"></div>
+    <textarea class="dictee-input" id="dictee-input" placeholder="Écris la phrase ici…" rows="3"
+      autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+    <button class="btn-valider" onclick="validerDictee()">Valider ✓</button>
+  </div>
+  <button class="stop-btn" id="stop-btn" onclick="stopInfini()">⏹ Terminer la session</button>
+</div>
+
+<!-- ══════════════════════════════════════ RESULT ══ -->
+<div id="result" class="screen">
+  <canvas class="confetti-c" id="confetti-c"></canvas>
+  <div class="res-header">
+    <div class="stars" id="stars"></div>
+    <div class="score-num display" id="score-num"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="res-tags" id="res-tags"></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" onclick="switchTab('corr',this)">Correction</div>
+    <div class="tab" onclick="switchTab('stats',this)">Stats</div>
+    <div class="tab" onclick="switchTab('rank',this)">Classement</div>
+    <div class="tab" onclick="switchTab('bdg',this)">Badges</div>
+  </div>
+  <div class="pane on" id="pane-corr"></div>
+  <div class="pane" id="pane-stats"></div>
+  <div class="pane" id="pane-rank"></div>
+  <div class="pane" id="pane-bdg"></div>
+  <div class="res-btns">
+    <button class="btn-replay" onclick="replayGame()">🔄 Rejouer</button>
+    <button class="btn-home" onclick="goHome()">🏠 Accueil</button>
+  </div>
+</div>
+
+<!-- Scripts : data en premier, puis app -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
