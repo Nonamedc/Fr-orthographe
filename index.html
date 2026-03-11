@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060c18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Français Posé 📚</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060c18;--bg2:#0b1425;--bg3:#12203a;--bg4:#182d4f;
+  --acc:#00c9a7;--acc2:#f59e0b;--acc3:#818cf8;
+  --red:#f43f5e;--grn:#00c9a7;--gold:#f59e0b;
+  --txt:#e2ecff;--txt2:#4d6a93;--txt3:#7a9bc4;
+  --r:16px;--r2:12px;
+  --sh:0 4px 24px rgba(0,0,0,.45);
+  --sh2:0 2px 8px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--txt);font-family:'Plus Jakarta Sans',sans-serif}
+.display{font-family:'Bricolage Grotesque',sans-serif}
+
+/* ─── Background mesh ─── */
+body::before{content:'';position:fixed;inset:0;background:
+  radial-gradient(ellipse 60% 40% at 20% 0%,rgba(0,201,167,.07) 0%,transparent 70%),
+  radial-gradient(ellipse 50% 35% at 80% 100%,rgba(129,140,248,.06) 0%,transparent 70%);
+  pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;
+  background-image:radial-gradient(circle,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:28px 28px;pointer-events:none;z-index:0}
+
+/* ─── Screens ─── */
+.screen{position:relative;z-index:1;height:100dvh;overflow-y:auto;overflow-x:hidden;
+  padding-bottom:max(env(safe-area-inset-bottom),20px);display:none}
+.screen.active{display:block;animation:screenIn .28s cubic-bezier(.22,.68,0,1.2)}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── Animations ─── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pop{0%{transform:scale(.92)}60%{transform:scale(1.05)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes fly{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-80px) scale(1.6)}}
+@keyframes cf{to{transform:translateY(110vh) rotate(740deg);opacity:0}}
+@keyframes pulsate{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(28px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.shake{animation:shake .35s ease-in-out}
+
+/* ─── Toast ─── */
+#toast{position:fixed;top:18px;left:50%;transform:translateX(-50%);
+  background:var(--bg3);border:1px solid rgba(0,201,167,.25);
+  border-radius:100px;padding:8px 22px;font-size:.8rem;font-weight:700;
+  z-index:999;opacity:0;transition:opacity .3s;pointer-events:none;
+  white-space:nowrap;box-shadow:var(--sh)}
+
+/* ─── Timer bar (top) ─── */
+#ctm-bar{height:3px;background:linear-gradient(90deg,var(--acc),var(--acc3));
+  width:100%;display:none;position:fixed;top:0;left:0;z-index:300;
+  transition:width 1s linear;transform-origin:left}
+
+/* ══════════════════════════════════════
+   HOME
+══════════════════════════════════════ */
+.home-header{padding:22px 16px 10px;display:flex;align-items:flex-start;justify-content:space-between}
+.logo-area h1{font-size:1.65rem;line-height:1;background:linear-gradient(120deg,var(--acc),var(--acc3) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.logo-area .sub{font-size:.68rem;color:var(--txt2);margin-top:3px;font-weight:500}
+.hdr-btns{display:flex;gap:6px;margin-top:2px}
+.icon-btn{background:var(--bg3);border:1px solid rgba(255,255,255,.06);border-radius:10px;
+  width:36px;height:36px;font-size:.95rem;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;color:var(--txt3);flex-shrink:0;transition:.15s}
+.icon-btn:active{transform:scale(.93)}
+
+/* ─── Profiles ─── */
+.profiles-wrap{padding:0 12px 10px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.profiles-wrap::-webkit-scrollbar{display:none}
+.prof-card{flex-shrink:0;background:var(--bg2);border:2px solid var(--bg3);
+  border-radius:16px;padding:10px 12px 8px;cursor:pointer;text-align:center;min-width:78px;
+  transition:.2s;position:relative}
+.prof-card:active{transform:scale(.95)}
+.prof-card.active{border-color:var(--acc);background:rgba(0,201,167,.06);
+  box-shadow:0 0 16px rgba(0,201,167,.15)}
+.prof-card .av{font-size:1.8rem;line-height:1}
+.prof-card .pname{font-size:.64rem;font-weight:800;margin-top:4px;
+  max-width:78px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.01em}
+.prof-card .plvl{font-size:.56rem;color:var(--acc);margin-top:2px;font-weight:700}
+.prof-card .perr{font-size:.54rem;color:var(--acc2);margin-top:1px;font-weight:700}
+.prof-card.add-prof{border-style:dashed;opacity:.45;border-color:rgba(255,255,255,.15)}
+.prof-card.add-prof:hover{opacity:.8}
+
+/* ─── Revision banner ─── */
+.rev-banner{margin:0 12px 8px;background:linear-gradient(135deg,rgba(245,158,11,.1),rgba(245,158,11,.04));
+  border:1.5px solid rgba(245,158,11,.28);border-radius:14px;
+  padding:11px 14px;display:none;align-items:center;gap:10px;cursor:pointer;transition:.18s}
+.rev-banner:active{transform:scale(.98)}
+.rev-banner.show{display:flex}
+.rev-icon{font-size:1.3rem}
+.rev-text .rt{font-size:.77rem;font-weight:800;color:var(--acc2)}
+.rev-text .rs{font-size:.62rem;color:var(--txt2);margin-top:1px}
+.rev-cta{margin-left:auto;background:var(--acc2);color:#000;border:none;border-radius:8px;
+  padding:6px 13px;font-size:.72rem;font-weight:800;cursor:pointer;font-family:inherit;
+  white-space:nowrap;flex-shrink:0}
+
+/* ─── Section titles ─── */
+.sect{padding:4px 16px 7px;font-size:.63rem;font-weight:800;color:var(--txt2);
+  text-transform:uppercase;letter-spacing:.12em;display:flex;align-items:center;gap:8px}
+.sect::after{content:'';flex:1;height:1px;background:var(--bg3)}
+
+/* ─── Level pills ─── */
+.lvl-row{padding:0 12px 10px;display:flex;gap:5px;overflow-x:auto;scrollbar-width:none}
+.lvl-row::-webkit-scrollbar{display:none}
+.lpill{flex-shrink:0;padding:6px 13px;border-radius:100px;border:1.5px solid rgba(255,255,255,.07);
+  font-size:.77rem;font-weight:700;cursor:pointer;transition:.15s;background:transparent;color:var(--txt2)}
+.lpill.on{background:var(--acc3);border-color:var(--acc3);color:#fff}
+.lpill.range{background:rgba(129,140,248,.14);border-color:var(--acc3)}
+
+/* ─── Exercise grid ─── */
+.ex-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px 8px}
+.ex-card{background:var(--bg2);border:1.5px solid var(--bg3);border-radius:var(--r);
+  padding:14px 12px 11px;cursor:pointer;transition:.18s;position:relative;overflow:hidden}
+.ex-card::after{content:'';position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at 50% 50%,rgba(0,201,167,.12),transparent 70%);transition:.3s}
+.ex-card:active::after{opacity:1}
+.ex-card:active{transform:scale(.96)}
+.ex-card.selected{border-color:var(--acc);background:rgba(0,201,167,.05)}
+.ex-card .eicon{font-size:1.55rem;margin-bottom:5px;line-height:1}
+.ex-card .elabel{font-size:.77rem;font-weight:800;letter-spacing:-.01em}
+.ex-card .esub{font-size:.59rem;color:var(--txt2);margin-top:2px}
+.ex-card .ebadge{position:absolute;top:7px;right:7px;font-size:.53rem;font-weight:700;
+  background:var(--bg3);padding:2px 6px;border-radius:5px;color:var(--txt2)}
+.ex-card.off{opacity:.2;pointer-events:none}
+.ex-mix{grid-column:1/-1;background:linear-gradient(135deg,rgba(0,201,167,.08),rgba(129,140,248,.08));
+  border-color:rgba(0,201,167,.2)}
+.ex-mix.selected{border-color:var(--acc)}
+
+/* ─── Options ─── */
+.opts-box{margin:0 12px 12px;background:var(--bg2);border-radius:var(--r);padding:14px 14px 10px;
+  border:1px solid var(--bg3)}
+.opt-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.opt-row:last-child{margin-bottom:0}
+.opt-lbl{font-size:.65rem;font-weight:800;color:var(--txt2);min-width:68px;text-transform:uppercase;letter-spacing:.06em}
+.opt-btns{display:flex;gap:4px;flex-wrap:wrap}
+.opb{padding:5px 12px;border-radius:8px;border:1.5px solid rgba(255,255,255,.07);
+  font-size:.72rem;font-weight:700;cursor:pointer;background:transparent;color:var(--txt2);
+  transition:.15s;font-family:inherit}
+.opb.on{background:var(--acc2);border-color:var(--acc2);color:#000}
+
+/* ══════════════════════════════════════
+   GAME
+══════════════════════════════════════ */
+.game-top{padding:14px 14px 0;display:flex;align-items:center;justify-content:space-between}
+.g-label{font-size:.73rem;font-weight:800;color:var(--acc3);letter-spacing:-.01em}
+.g-chips{display:flex;align-items:center;gap:5px}
+.xp-pill{font-size:.71rem;font-weight:800;color:var(--acc);
+  background:rgba(0,201,167,.1);border-radius:100px;padding:4px 11px}
+.combo-pill{font-size:.7rem;font-weight:800;color:var(--acc2);
+  background:rgba(245,158,11,.1);border-radius:100px;padding:4px 10px;
+  display:none;animation:pulsate .9s infinite}
+
+/* Timer countdown */
+.ctm-row{display:flex;justify-content:flex-end;padding:4px 14px 0;display:none}
+.ctm-disp{font-size:.88rem;font-weight:800;color:var(--acc2);letter-spacing:.02em}
+
+/* Dots */
+.prog-row{padding:8px 14px 4px;display:flex;align-items:center;gap:8px}
+.dots{display:flex;gap:4px;flex:1;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--bg3);flex-shrink:0;transition:.28s}
+.dot.ok{background:var(--grn)}
+.dot.ko{background:var(--red)}
+.dot.cur{background:var(--acc3);box-shadow:0 0 7px var(--acc3);animation:pulsate .8s infinite}
+.prog-txt{font-size:.67rem;color:var(--txt2);white-space:nowrap;font-weight:700}
+
+/* Question card */
+.q-wrap{padding:8px 12px}
+.q-card{background:var(--bg2);border-radius:20px;padding:18px 16px;
+  border:1.5px solid var(--bg3);min-height:90px;box-shadow:var(--sh2)}
+.q-type{font-size:.57rem;font-weight:800;text-transform:uppercase;letter-spacing:.14em;
+  color:var(--acc3);margin-bottom:8px}
+.q-main{font-size:1.05rem;font-weight:700;line-height:1.48;color:var(--txt)}
+.q-main em{color:var(--acc);font-style:normal;font-weight:900}
+.q-main strong{color:var(--acc3)}
+.q-hint{font-size:.76rem;color:var(--txt2);margin-top:8px;font-style:italic;line-height:1.45}
+.q-blank{display:inline-block;min-width:56px;border-bottom:2px solid var(--acc3);
+  text-align:center;font-weight:800;color:var(--acc3);padding:0 4px}
+.q-card.shake-card{animation:shake .32s ease-in-out}
+
+/* Choices */
+.ch-grid{padding:8px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ch{background:var(--bg2);border:2px solid rgba(255,255,255,.09);border-radius:14px;
+  padding:15px 10px;font-size:.9rem;font-weight:700;color:var(--txt);cursor:pointer;
+  transition:.18s;font-family:inherit;line-height:1.3;text-align:center;
+  position:relative;overflow:hidden}
+.ch::before{content:'';position:absolute;inset:0;opacity:0;transition:.2s;
+  background:radial-gradient(circle at 50% 50%,rgba(255,255,255,.07),transparent)}
+.ch:hover:not(:disabled)::before{opacity:1}
+.ch:active:not(:disabled){transform:scale(.95)}
+.ch.correct{background:rgba(0,201,167,.14);border-color:var(--grn);color:var(--grn);animation:pop .35s}
+.ch.wrong{background:rgba(244,63,94,.1);border-color:var(--red);color:var(--red)}
+.ch.dim{opacity:.22;pointer-events:none}
+.ch:disabled{pointer-events:none}
+
+/* Feedback bar */
+.fb{margin:4px 12px;border-radius:14px;padding:11px 14px;font-size:.82rem;font-weight:700;
+  display:none;animation:fadeUp .2s}
+.fb.ok{background:rgba(0,201,167,.1);border:1px solid rgba(0,201,167,.25);color:var(--grn)}
+.fb.ko{background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.22);color:var(--red)}
+.fb-row2{display:flex;align-items:center;justify-content:space-between;margin-top:7px}
+.fb-note{font-size:.73rem;color:var(--txt2);font-weight:500}
+.ai-btn{background:rgba(129,140,248,.12);border:1px solid rgba(129,140,248,.25);
+  border-radius:8px;padding:5px 11px;font-size:.67rem;font-weight:800;color:var(--acc3);
+  cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.ai-btn:active{transform:scale(.95)}
+
+/* Pts fly */
+.pts-fly{position:fixed;pointer-events:none;font-size:1rem;font-weight:900;
+  color:var(--gold);z-index:800;animation:fly .9s ease-out forwards;font-family:'Bricolage Grotesque',sans-serif}
+
+/* Stop btn */
+.stop-btn{display:none;width:calc(100% - 24px);margin:4px 12px 10px;
+  padding:11px;border-radius:12px;border:1.5px solid rgba(244,63,94,.35);
+  background:rgba(244,63,94,.07);color:var(--red);font-size:.83rem;
+  font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
+.stop-btn:active{background:rgba(244,63,94,.14)}
+
+/* ── Dictée zone ── */
+.dictee-zone{padding:8px 12px;display:none;flex-direction:column;gap:8px}
+.dictee-zone.show{display:flex}
+.dictee-listen{display:flex;gap:8px;align-items:center}
+.btn-listen{background:linear-gradient(135deg,var(--acc3),#6366f1);border:none;border-radius:12px;
+  padding:11px 20px;font-size:.85rem;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:7px;flex:1;justify-content:center;transition:.15s}
+.btn-listen:active{transform:scale(.96)}
+.btn-listen.playing{animation:pulsate .7s infinite;background:linear-gradient(135deg,#6366f1,var(--acc3))}
+.btn-listen-again{background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:10px;
+  padding:10px 14px;font-size:.8rem;font-weight:700;color:var(--txt2);cursor:pointer;font-family:inherit}
+.dictee-input{width:100%;background:var(--bg2);border:2px solid rgba(255,255,255,.09);
+  border-radius:14px;padding:13px 14px;color:var(--txt);font-size:1rem;font-family:inherit;
+  outline:none;resize:none;min-height:70px;line-height:1.5;transition:.2s}
+.dictee-input:focus{border-color:var(--acc3)}
+.accents-bar{display:flex;gap:5px;flex-wrap:wrap}
+.acc-key{background:var(--bg3);border:1px solid rgba(255,255,255,.09);border-radius:7px;
+  padding:6px 10px;font-size:.95rem;font-weight:700;cursor:pointer;color:var(--txt);
+  font-family:inherit;transition:.12s;min-width:34px;text-align:center}
+.acc-key:active{background:var(--acc3);color:#fff;transform:scale(.92)}
+.btn-valider{width:100%;padding:13px;border-radius:14px;border:none;
+  background:linear-gradient(135deg,var(--acc),var(--acc3));color:#000;
+  font-size:.92rem;font-weight:900;font-family:inherit;cursor:pointer;transition:.15s}
+.btn-valider:active{transform:scale(.98)}
+/* Diff display */
+.diff-wrap{background:var(--bg2);border-radius:14px;padding:13px 14px;line-height:1.8;
+  font-size:.95rem;font-weight:600;border:1px solid var(--bg3)}
+.diff-ok{color:var(--grn)}
+.diff-err{color:var(--red);text-decoration:underline wavy var(--red)}
+.diff-miss{color:var(--acc2);background:rgba(245,158,11,.12);border-radius:4px;padding:0 3px}
+/* Phrase corr zone */
+.corr-sent{font-size:1rem;font-weight:600;line-height:1.6;color:var(--txt);margin-bottom:4px}
+.corr-sent .err-word{color:var(--red);font-weight:900}
+/* Genre zone */
+.genre-big{font-size:2.2rem;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;
+  color:var(--txt);text-align:center;padding:10px 0 4px}
+.genre-sub{font-size:.8rem;color:var(--txt2);text-align:center;font-style:italic}
+
+
+/* ══════════════════════════════════════
+   RESULT
+══════════════════════════════════════ */
+.res-header{padding:24px 16px 12px;text-align:center}
+.res-title{font-size:1.45rem;margin-bottom:6px}
+.score-num{font-size:3.2rem;font-family:'Bricolage Grotesque',sans-serif;
+  color:var(--acc);line-height:1}
+.score-sub{font-size:.78rem;color:var(--txt2);margin-top:5px;font-weight:600}
+.stars{font-size:1.6rem;margin:8px 0 4px}
+.res-tags{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin:8px 0}
+.rtag{font-size:.66rem;font-weight:700;padding:4px 10px;border-radius:8px;
+  background:var(--bg3);color:var(--txt3)}
+
+/* Tabs */
+.tabs{display:flex;border-bottom:1px solid var(--bg3);margin:0 12px}
+.tab{flex:1;padding:11px 4px;text-align:center;font-size:.71rem;font-weight:800;
+  color:var(--txt2);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;
+  text-transform:uppercase;letter-spacing:.06em}
+.tab.on{color:var(--acc);border-color:var(--acc)}
+.pane{padding:10px 12px;display:none}
+.pane.on{display:block}
+
+/* Correction */
+.corr-item{background:var(--bg2);border-radius:13px;padding:10px 13px;
+  margin-bottom:6px;display:flex;align-items:flex-start;gap:10px}
+.ci-icon{font-size:.95rem;flex-shrink:0;margin-top:2px}
+.ci-body{flex:1}
+.ci-q{font-size:.77rem;font-weight:700;color:var(--txt);line-height:1.35}
+.ci-a{font-size:.71rem;color:var(--txt2);margin-top:2px}
+.ci-a span{color:var(--acc);font-weight:800}
+.ci-why{background:transparent;border:1px solid rgba(129,140,248,.2);border-radius:6px;
+  padding:3px 9px;font-size:.61rem;font-weight:800;color:var(--acc3);cursor:pointer;
+  font-family:inherit;margin-top:5px;display:inline-block}
+
+/* Stats */
+.stat-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:14px}
+.scard{background:var(--bg2);border-radius:12px;padding:10px 8px;text-align:center;border:1px solid var(--bg3)}
+.scard-v{font-size:1.2rem;font-weight:900;color:var(--acc);font-family:'Bricolage Grotesque',sans-serif}
+.scard-l{font-size:.57rem;color:var(--txt2);margin-top:2px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.bar-lbl{font-size:.69rem;font-weight:700;color:var(--txt);min-width:84px}
+.bar-track{flex:1;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--acc),var(--acc3));
+  transition:width .9s cubic-bezier(.22,.68,0,1.2);width:0%}
+.bar-pct{font-size:.64rem;font-weight:800;color:var(--txt2);min-width:28px;text-align:right}
+.hist-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--bg2);
+  border-radius:10px;margin-bottom:5px;border:1px solid var(--bg3)}
+.hi-date{font-size:.66rem;color:var(--txt2);font-weight:700;min-width:40px}
+.hi-op{flex:1;font-size:.72rem;font-weight:700}
+.hi-score{font-size:.7rem;font-weight:800;color:var(--acc)}
+.section-h{font-size:.63rem;font-weight:800;color:var(--txt2);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:8px;margin-top:4px}
+
+/* Leaderboard */
+.lb-row{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--bg2);
+  border-radius:12px;margin-bottom:5px;border:1px solid var(--bg3)}
+.lb-rank{font-size:.85rem;min-width:24px;text-align:center}
+.lb-av{font-size:1.1rem}
+.lb-name{flex:1;font-size:.79rem;font-weight:700}
+.lb-xp{font-size:.73rem;font-weight:800;color:var(--acc)}
+.lb-row.me{border-color:rgba(0,201,167,.3);background:rgba(0,201,167,.05)}
+
+/* Badges */
+.bdg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bdg{background:var(--bg2);border-radius:12px;padding:11px 6px;text-align:center;
+  border:1.5px solid var(--bg3)}
+.bdg.earned{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
+.bdg .bi{font-size:1.65rem;margin-bottom:4px;filter:grayscale(1);opacity:.3;display:block}
+.bdg.earned .bi{filter:none;opacity:1}
+.bdg .bn{font-size:.58rem;font-weight:800;color:var(--txt2);line-height:1.3}
+.bdg.earned .bn{color:var(--gold)}
+
+/* Result buttons */
+.res-btns{display:flex;gap:8px;padding:8px 12px 20px}
+.res-btns button{flex:1;padding:13px;border-radius:14px;border:none;
+  font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;transition:.15s}
+.res-btns button:active{transform:scale(.97)}
+.btn-replay{background:var(--acc);color:#000}
+.btn-home{background:var(--bg2);color:var(--txt);border:1px solid var(--bg3) !important}
+
+/* Confetti */
+.confetti-c{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:700}
+.cf{position:absolute;width:8px;height:8px;top:-10px;animation:cf 1.9s ease-in forwards}
+
+/* ══════════════════════════════════════
+   MODALS
+══════════════════════════════════════ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:500;
+  display:none;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.overlay.open{display:flex}
+.modal{background:linear-gradient(160deg,var(--bg2),var(--bg));
+  border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:24px;
+  width:min(360px,92vw);animation:fadeUp .25s cubic-bezier(.22,.68,0,1.2);box-shadow:var(--sh)}
+.modal h2{font-size:1.05rem;margin-bottom:16px;text-align:center;
+  font-family:'Bricolage Grotesque',sans-serif}
+.modal input{width:100%;background:var(--bg3);border:1.5px solid rgba(255,255,255,.07);
+  border-radius:11px;padding:11px 14px;color:var(--txt);font-size:.9rem;
+  font-family:inherit;outline:none;margin-bottom:10px;transition:.2s}
+.modal input:focus{border-color:var(--acc)}
+.hint-txt{font-size:.67rem;color:var(--txt2);margin-bottom:12px;line-height:1.6}
+.av-grid{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:16px}
+.avb{font-size:1.5rem;background:var(--bg3);border:2px solid transparent;
+  border-radius:10px;padding:6px 8px;cursor:pointer;transition:.15s}
+.avb:active{transform:scale(.9)}
+.avb.sel{border-color:var(--acc);background:rgba(0,201,167,.1)}
+.m-btns{display:flex;gap:8px;margin-top:4px}
+.m-btns button{flex:1;padding:11px;border-radius:12px;border:none;cursor:pointer;
+  font-size:.84rem;font-weight:800;font-family:inherit;transition:.15s}
+.m-btns button:active{transform:scale(.97)}
+.btn-can{background:var(--bg3);color:var(--txt2)}
+.btn-go{background:var(--acc);color:#000}
+.btn-danger{background:rgba(244,63,94,.12);color:var(--red);border:1px solid rgba(244,63,94,.25) !important}
+.key-row{display:flex;gap:6px;margin-bottom:12px}
+.key-row input{flex:1;margin-bottom:0}
+.key-row button{background:var(--acc);color:#000;border:none;border-radius:10px;
+  padding:0 14px;font-size:.78rem;font-weight:800;cursor:pointer;font-family:inherit;
+  white-space:nowrap;flex-shrink:0}
+.set-lbl{font-size:.63rem;font-weight:800;color:var(--txt2);text-transform:uppercase;
+  letter-spacing:.1em;margin-bottom:7px;display:block}
+
+/* AI modal */
+.ai-modal{background:linear-gradient(150deg,#0d1e38,#090f1e);
+  border-color:rgba(129,140,248,.25)}
+.ai-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.ai-head h3{font-size:.92rem;font-weight:800;color:var(--acc3)}
+.ai-head span{font-size:1.4rem}
+.ai-content{font-size:.84rem;line-height:1.7;color:var(--txt3)}
+.ai-spinner{display:flex;align-items:center;gap:10px;padding:16px 0;color:var(--txt2);font-size:.82rem}
+.spinner-ring{width:18px;height:18px;border:2.5px solid rgba(129,140,248,.25);
+  border-top-color:var(--acc3);border-radius:50%;animation:spin .65s linear infinite;flex-shrink:0}
+.ai-close-btn{display:block;width:100%;margin-top:16px;padding:11px;border-radius:12px;
+  border:none;background:var(--bg3);color:var(--txt);font-size:.85rem;font-weight:800;
+  cursor:pointer;font-family:inherit;transition:.15s}
+.ai-close-btn:active{transform:scale(.98)}
+
+/* Badge popup */
+.badge-pop{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,#1a2b45,#0c1525);
+  border:1.5px solid rgba(245,158,11,.35);border-radius:18px;
+  padding:13px 20px;z-index:600;display:flex;align-items:center;gap:12px;
+  animation:slideUp .4s cubic-bezier(.22,.68,0,1.2);box-shadow:var(--sh);
+  white-space:nowrap}
+.bp-icon{font-size:2rem}
+.bp-top{font-size:.7rem;font-weight:800;color:var(--gold)}
+.bp-name{font-size:.62rem;color:var(--txt2)}
+</style>
+
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+<div id="ctm-bar"></div>
+
+<!-- ══════════════════════════════════════ HOME ══ -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="logo-area">
+      <h1 class="display">📚 Français Posé</h1>
+      <div class="sub">Grammaire &amp; Conjugaison · CP → Terminale</div>
+    </div>
+    <div class="hdr-btns">
+      <button class="icon-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+    </div>
+  </div>
+
+  <div class="sect">Profils</div>
+  <div class="profiles-wrap" id="profiles-wrap"></div>
+
+  <div id="rev-banner" class="rev-banner" onclick="startRevision()">
+    <div class="rev-icon">🔁</div>
+    <div class="rev-text">
+      <div class="rt" id="rev-title">Réviser les erreurs</div>
+      <div class="rs" id="rev-sub">Questions à retravailler</div>
+    </div>
+    <button class="rev-cta">Réviser →</button>
+  </div>
+
+  <div class="sect">Niveau scolaire</div>
+  <div class="lvl-row" id="lvl-row"></div>
+
+  <div class="sect">Exercice</div>
+  <div class="ex-grid" id="ex-grid"></div>
+
+  <div class="sect">Options</div>
+  <div class="opts-box">
+    <div class="opt-row">
+      <span class="opt-lbl">Questions</span>
+      <div class="opt-btns" id="opt-q">
+        <button class="opb on" onclick="setOpt('q',5,this)">5</button>
+        <button class="opb" onclick="setOpt('q',10,this)">10</button>
+        <button class="opb" onclick="setOpt('q',20,this)">20</button>
+        <button class="opb" onclick="setOpt('q',0,this)">∞</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Chrono</span>
+      <div class="opt-btns" id="opt-c">
+        <button class="opb on" onclick="setOpt('c','libre',this)">Libre</button>
+        <button class="opb" onclick="setOpt('c','30',this)">⚡ 30s</button>
+        <button class="opb" onclick="setOpt('c','60',this)">⚡ 60s</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Niveaux</span>
+      <div class="opt-btns">
+        <button class="opb on" id="opt-rnd" onclick="rndLvl()">🎲 Aléatoire</button>
+        <button class="opb" onclick="allLvls()">Tout</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nouveau profil -->
+<div class="overlay" id="prof-modal" onclick="if(event.target===this)closeProfModal()">
+  <div class="modal">
+    <h2>Nouveau profil</h2>
+    <input type="text" id="pname-inp" placeholder="Ton prénom" maxlength="14"
+      onkeydown="if(event.key==='Enter')saveProfModal()">
+    <div class="av-grid" id="av-grid"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeProfModal()">Annuler</button>
+      <button class="btn-go" onclick="saveProfModal()">Créer ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Paramètres -->
+<div class="overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h2>⚙️ Paramètres</h2>
+    <label class="set-lbl">Aide IA — Clé API Anthropic</label>
+    <div class="hint-txt">Entre ta clé API pour obtenir des explications après chaque erreur. Elle est stockée uniquement sur ton appareil.</div>
+    <div class="key-row">
+      <input type="password" id="api-key-inp" placeholder="sk-ant-…">
+      <button onclick="saveKey()">OK</button>
+    </div>
+    <label class="set-lbl" style="margin-top:8px">Supprimer un profil</label>
+    <div id="del-prof-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeSettings()">Fermer</button>
+      <button class="btn-danger" onclick="nukeAll()">Tout effacer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Explication IA -->
+<div class="overlay" id="ai-modal" onclick="if(event.target===this)closeAI()">
+  <div class="modal ai-modal">
+    <div class="ai-head"><span>🤖</span><h3>Explication</h3></div>
+    <div class="ai-content" id="ai-content">
+      <div class="ai-spinner"><div class="spinner-ring"></div>Analyse en cours…</div>
+    </div>
+    <button class="ai-close-btn" onclick="closeAI()">Compris ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ GAME ══ -->
+<div id="game" class="screen">
+  <div class="game-top">
+    <div class="g-label" id="g-label"></div>
+    <div class="g-chips">
+      <div class="xp-pill" id="xp-pill">+0 XP</div>
+      <div class="combo-pill" id="combo-pill">🔥 ×2</div>
+    </div>
+  </div>
+  <div class="ctm-row" id="ctm-row">
+    <div class="ctm-disp">⏱ <span id="ctm-n">30</span>s</div>
+  </div>
+  <div class="prog-row">
+    <div class="dots" id="dots"></div>
+    <div class="prog-txt" id="prog-txt"></div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card" id="q-card">
+      <div class="q-type" id="q-type"></div>
+      <div class="q-main" id="q-main"></div>
+      <div class="q-hint" id="q-hint"></div>
+    </div>
+  </div>
+  <div class="fb" id="fb"></div>
+  <div class="ch-grid" id="ch-grid"></div>
+  <div class="dictee-zone" id="dictee-zone">
+    <div class="dictee-listen">
+      <button class="btn-listen" id="btn-listen" onclick="speakDictee()">🔊 Écouter la phrase</button>
+      <button class="btn-listen-again" id="btn-relisten" style="display:none" onclick="speakDictee()">🔁</button>
+    </div>
+    <div class="accents-bar" id="accents-bar"></div>
+    <textarea class="dictee-input" id="dictee-input" placeholder="Écris la phrase ici…" rows="3"
+      autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+    <button class="btn-valider" onclick="validerDictee()">Valider ✓</button>
+  </div>
+  <button class="stop-btn" id="stop-btn" onclick="stopInfini()">⏹ Terminer la session</button>
+</div>
+
+<!-- ══════════════════════════════════════ RESULT ══ -->
+<div id="result" class="screen">
+  <canvas class="confetti-c" id="confetti-c"></canvas>
+  <div class="res-header">
+    <div class="stars" id="stars"></div>
+    <div class="score-num display" id="score-num"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="res-tags" id="res-tags"></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" onclick="switchTab('corr',this)">Correction</div>
+    <div class="tab" onclick="switchTab('stats',this)">Stats</div>
+    <div class="tab" onclick="switchTab('rank',this)">Classement</div>
+    <div class="tab" onclick="switchTab('bdg',this)">Badges</div>
+  </div>
+  <div class="pane on" id="pane-corr"></div>
+  <div class="pane" id="pane-stats"></div>
+  <div class="pane" id="pane-rank"></div>
+  <div class="pane" id="pane-bdg"></div>
+  <div class="res-btns">
+    <button class="btn-replay" onclick="replayGame()">🔄 Rejouer</button>
+    <button class="btn-home" onclick="goHome()">🏠 Accueil</button>
+  </div>
+</div>
+
+<!-- Scripts : data en premier, puis app -->
+<script>
+// ══════════════════════════════════════════════════
+// FRANÇAIS POSÉ — data.js  (version enrichie)
+// Règle des distracteurs : toujours des variantes
+// du même mot ou des leurres sémantiquement proches.
+// Jamais un mot venu d'une autre entrée au hasard.
+// ══════════════════════════════════════════════════
+
+// ── Verbes ── [infinitif, groupe, auxiliaire, participe_passé, niveau_min]
+const VERB_LIST=[
+  // CP
+  ['être',3,'et','été','CP'],['avoir',3,'av','eu','CP'],
+  // CE1
+  ['aimer',1,'av','aimé','CE1'],['parler',1,'av','parlé','CE1'],
+  ['chanter',1,'av','chanté','CE1'],['danser',1,'av','dansé','CE1'],
+  ['jouer',1,'av','joué','CE1'],['regarder',1,'av','regardé','CE1'],
+  ['écouter',1,'av','écouté','CE1'],['travailler',1,'av','travaillé','CE1'],
+  ['chercher',1,'av','cherché','CE1'],['trouver',1,'av','trouvé','CE1'],
+  ['donner',1,'av','donné','CE1'],['penser',1,'av','pensé','CE1'],
+  ['rester',1,'et','resté','CE1'],['arriver',1,'et','arrivé','CE1'],
+  ['montrer',1,'av','montré','CE1'],['tourner',1,'av','tourné','CE1'],
+  ['porter',1,'av','porté','CE1'],['manger',1,'av','mangé','CE1'],
+  ['dessiner',1,'av','dessiné','CE1'],['entrer',1,'et','entré','CE1'],
+  ['tomber',1,'et','tombé','CE1'],['monter',1,'et','monté','CE1'],
+  ['marcher',1,'av','marché','CE1'],['sauter',1,'av','sauté','CE1'],
+  ['crier',1,'av','crié','CE1'],['pleurer',1,'av','pleuré','CE1'],
+  ['couper',1,'av','coupé','CE1'],['poser',1,'av','posé','CE1'],
+  ['laver',1,'av','lavé','CE1'],['fermer',1,'av','fermé','CE1'],
+  ['oublier',1,'av','oublié','CE1'],['décider',1,'av','décidé','CE1'],
+  ['habiter',1,'av','habité','CE1'],['aider',1,'av','aidé','CE1'],
+  ['acheter',1,'av','acheté','CE1'],['appeler',1,'av','appelé','CE1'],
+  // CE2
+  ['commencer',1,'av','commencé','CE2'],['bouger',1,'av','bougé','CE2'],
+  ['nager',1,'av','nagé','CE2'],['rentrer',1,'et','rentré','CE2'],
+  ['passer',1,'av','passé','CE2'],['lever',1,'av','levé','CE2'],
+  ['ranger',1,'av','rangé','CE2'],['choisir',2,'av','choisi','CE2'],
+  ['finir',2,'av','fini','CE2'],['grandir',2,'et','grandi','CE2'],
+  ['préparer',1,'av','préparé','CE2'],['expliquer',1,'av','expliqué','CE2'],
+  ['traverser',1,'av','traversé','CE2'],['rencontrer',1,'av','rencontré','CE2'],
+  ['lancer',1,'av','lancé','CE2'],['avancer',1,'av','avancé','CE2'],
+  ['reculer',1,'av','reculé','CE2'],['grimper',1,'av','grimpé','CE2'],
+  ['glisser',1,'et','glissé','CE2'],['plonger',1,'av','plongé','CE2'],
+  // CM1
+  ['espérer',1,'av','espéré','CM1'],['répéter',1,'av','répété','CM1'],
+  ['voyager',1,'av','voyagé','CM1'],['rougir',2,'av','rougi','CM1'],
+  ['réfléchir',2,'av','réfléchi','CM1'],['réussir',2,'av','réussi','CM1'],
+  ['obéir',2,'av','obéi','CM1'],['nourrir',2,'av','nourri','CM1'],
+  ['punir',2,'av','puni','CM1'],['faire',3,'av','fait','CM1'],
+  ['dire',3,'av','dit','CM1'],['prendre',3,'av','pris','CM1'],
+  ['venir',3,'et','venu','CM1'],['voir',3,'av','vu','CM1'],
+  ['savoir',3,'av','su','CM1'],['pouvoir',3,'av','pu','CM1'],
+  ['vouloir',3,'av','voulu','CM1'],['devoir',3,'av','dû','CM1'],
+  ['mettre',3,'av','mis','CM1'],['partir',3,'et','parti','CM1'],
+  ['sortir',3,'et','sorti','CM1'],['aller',3,'et','allé','CM1'],
+  ['rappeler',1,'av','rappelé','CM1'],['améliorer',1,'av','amélioré','CM1'],
+  ['utiliser',1,'av','utilisé','CM1'],['terminer',1,'av','terminé','CM1'],
+  ['observer',1,'av','observé','CM1'],['installer',1,'av','installé','CM1'],
+  ['remplacer',1,'av','remplacé','CM1'],['accepter',1,'av','accepté','CM1'],
+  // CM2
+  ['agir',2,'av','agi','CM2'],['établir',2,'av','établi','CM2'],
+  ['tenir',3,'av','tenu','CM2'],['recevoir',3,'av','reçu','CM2'],
+  ['boire',3,'av','bu','CM2'],['croire',3,'av','cru','CM2'],
+  ['écrire',3,'av','écrit','CM2'],['lire',3,'av','lu','CM2'],
+  ['descendre',3,'et','descendu','CM2'],['résoudre',3,'av','résolu','CM2'],
+  ['remplir',2,'av','rempli','CM2'],['subir',2,'av','subi','CM2'],
+  ['fournir',2,'av','fourni','CM2'],['accomplir',2,'av','accompli','CM2'],
+  // 6e
+  ['connaître',3,'av','connu','6e'],['suivre',3,'av','suivi','6e'],
+  ['vivre',3,'av','vécu','6e'],['courir',3,'av','couru','6e'],
+  ['ouvrir',3,'av','ouvert','6e'],['offrir',3,'av','offert','6e'],
+  ['sentir',3,'av','senti','6e'],['dormir',3,'av','dormi','6e'],
+  ['servir',3,'av','servi','6e'],['rire',3,'av','ri','6e'],
+  ['plaire',3,'av','plu','6e'],['cueillir',3,'av','cueilli','6e'],
+  ['mentir',3,'av','menti','6e'],['battre',3,'av','battu','6e'],
+  ['peindre',3,'av','peint','6e'],['joindre',3,'av','joint','6e'],
+  // 5e
+  ['conduire',3,'av','conduit','5e'],['construire',3,'av','construit','5e'],
+  ['naître',3,'et','né','5e'],['mourir',3,'et','mort','5e'],
+  ['valoir',3,'av','valu','5e'],['craindre',3,'av','craint','5e'],
+  ['suffire',3,'av','suffi','5e'],['rejoindre',3,'av','rejoint','5e'],
+  ['produire',3,'av','produit','5e'],['traduire',3,'av','traduit','5e'],
+  // 4e+
+  ['perdre',3,'av','perdu','4e'],['vendre',3,'av','vendu','4e'],
+  ['attendre',3,'av','attendu','4e'],['entendre',3,'av','entendu','4e'],
+  ['répondre',3,'av','répondu','4e'],['défendre',3,'av','défendu','4e'],
+  ['répandre',3,'av','répandu','4e'],['confondre',3,'av','confondu','4e'],
+  ['conclure',3,'av','conclu','3e'],['inclure',3,'av','inclus','3e'],
+  ['exclure',3,'av','exclu','3e'],['dissoudre',3,'av','dissous','3e'],
+  ['distraire',3,'av','distrait','2de'],['abstraire',3,'av','abstrait','2de'],
+];
+
+// ── Conjugaisons irrégulières ──
+const CONJ_IRREG={
+  'être':{pres:['suis','es','est','sommes','êtes','sont'],imp:['étais','étais','était','étions','étiez','étaient'],fut:['serai','seras','sera','serons','serez','seront'],cond:['serais','serais','serait','serions','seriez','seraient'],subj:['sois','sois','soit','soyons','soyez','soient']},
+  'avoir':{pres:['ai','as','a','avons','avez','ont'],imp:['avais','avais','avait','avions','aviez','avaient'],fut:['aurai','auras','aura','aurons','aurez','auront'],cond:['aurais','aurais','aurait','aurions','auriez','auraient'],subj:['aie','aies','ait','ayons','ayez','aient']},
+  'aller':{pres:['vais','vas','va','allons','allez','vont'],imp:['allais','allais','allait','allions','alliez','allaient'],fut:['irai','iras','ira','irons','irez','iront'],cond:['irais','irais','irait','irions','iriez','iraient'],subj:['aille','ailles','aille','allions','alliez','aillent']},
+  'faire':{pres:['fais','fais','fait','faisons','faites','font'],imp:['faisais','faisais','faisait','faisions','faisiez','faisaient'],fut:['ferai','feras','fera','ferons','ferez','feront'],cond:['ferais','ferais','ferait','ferions','feriez','feraient'],subj:['fasse','fasses','fasse','fassions','fassiez','fassent']},
+  'dire':{pres:['dis','dis','dit','disons','dites','disent'],imp:['disais','disais','disait','disions','disiez','disaient'],fut:['dirai','diras','dira','dirons','direz','diront'],cond:['dirais','dirais','dirait','dirions','diriez','diraient'],subj:['dise','dises','dise','disions','disiez','disent']},
+  'prendre':{pres:['prends','prends','prend','prenons','prenez','prennent'],imp:['prenais','prenais','prenait','prenions','preniez','prenaient'],fut:['prendrai','prendras','prendra','prendrons','prendrez','prendront'],cond:['prendrais','prendrais','prendrait','prendrions','prendriez','prendraient'],subj:['prenne','prennes','prenne','prenions','preniez','prennent']},
+  'venir':{pres:['viens','viens','vient','venons','venez','viennent'],imp:['venais','venais','venait','venions','veniez','venaient'],fut:['viendrai','viendras','viendra','viendrons','viendrez','viendront'],cond:['viendrais','viendrais','viendrait','viendrions','viendriez','viendraient'],subj:['vienne','viennes','vienne','venions','veniez','viennent']},
+  'voir':{pres:['vois','vois','voit','voyons','voyez','voient'],imp:['voyais','voyais','voyait','voyions','voyiez','voyaient'],fut:['verrai','verras','verra','verrons','verrez','verront'],cond:['verrais','verrais','verrait','verrions','verriez','verraient'],subj:['voie','voies','voie','voyions','voyiez','voient']},
+  'savoir':{pres:['sais','sais','sait','savons','savez','savent'],imp:['savais','savais','savait','savions','saviez','savaient'],fut:['saurai','sauras','saura','saurons','saurez','sauront'],cond:['saurais','saurais','saurait','saurions','sauriez','sauraient'],subj:['sache','saches','sache','sachions','sachiez','sachent']},
+  'pouvoir':{pres:['peux','peux','peut','pouvons','pouvez','peuvent'],imp:['pouvais','pouvais','pouvait','pouvions','pouviez','pouvaient'],fut:['pourrai','pourras','pourra','pourrons','pourrez','pourront'],cond:['pourrais','pourrais','pourrait','pourrions','pourriez','pourraient'],subj:['puisse','puisses','puisse','puissions','puissiez','puissent']},
+  'vouloir':{pres:['veux','veux','veut','voulons','voulez','veulent'],imp:['voulais','voulais','voulait','voulions','vouliez','voulaient'],fut:['voudrai','voudras','voudra','voudrons','voudrez','voudront'],cond:['voudrais','voudrais','voudrait','voudrions','voudriez','voudraient'],subj:['veuille','veuilles','veuille','voulions','vouliez','veuillent']},
+  'devoir':{pres:['dois','dois','doit','devons','devez','doivent'],imp:['devais','devais','devait','devions','deviez','devaient'],fut:['devrai','devras','devra','devrons','devrez','devront'],cond:['devrais','devrais','devrait','devrions','devriez','devraient'],subj:['doive','doives','doive','devions','deviez','doivent']},
+  'mettre':{pres:['mets','mets','met','mettons','mettez','mettent'],imp:['mettais','mettais','mettait','mettions','mettiez','mettaient'],fut:['mettrai','mettras','mettra','mettrons','mettrez','mettront'],cond:['mettrais','mettrais','mettrait','mettrions','mettriez','mettraient'],subj:['mette','mettes','mette','mettions','mettiez','mettent']},
+  'partir':{pres:['pars','pars','part','partons','partez','partent'],imp:['partais','partais','partait','partions','partiez','partaient'],fut:['partirai','partiras','partira','partirons','partirez','partiront'],cond:['partirais','partirais','partirait','partirions','partiriez','partiraient'],subj:['parte','partes','parte','partions','partiez','partent']},
+  'sortir':{pres:['sors','sors','sort','sortons','sortez','sortent'],imp:['sortais','sortais','sortait','sortions','sortiez','sortaient'],fut:['sortirai','sortiras','sortira','sortirons','sortirez','sortiront'],cond:['sortirais','sortirais','sortirait','sortirions','sortiriez','sortiraient'],subj:['sorte','sortes','sorte','sortions','sortiez','sortent']},
+  'tenir':{pres:['tiens','tiens','tient','tenons','tenez','tiennent'],imp:['tenais','tenais','tenait','tenions','teniez','tenaient'],fut:['tiendrai','tiendras','tiendra','tiendrons','tiendrez','tiendront'],cond:['tiendrais','tiendrais','tiendrait','tiendrions','tiendriez','tiendraient'],subj:['tienne','tiennes','tienne','tenions','teniez','tiennent']},
+  'recevoir':{pres:['reçois','reçois','reçoit','recevons','recevez','reçoivent'],imp:['recevais','recevais','recevait','recevions','receviez','recevaient'],fut:['recevrai','recevras','recevra','recevrons','recevrez','recevront'],cond:['recevrais','recevrais','recevrait','recevrions','recevriez','recevraient'],subj:['reçoive','reçoives','reçoive','recevions','receviez','reçoivent']},
+  'boire':{pres:['bois','bois','boit','buvons','buvez','boivent'],imp:['buvais','buvais','buvait','buvions','buviez','buvaient'],fut:['boirai','boiras','boira','boirons','boirez','boiront'],cond:['boirais','boirais','boirait','boirions','boiriez','boiraient'],subj:['boive','boives','boive','buvions','buviez','boivent']},
+  'croire':{pres:['crois','crois','croit','croyons','croyez','croient'],imp:['croyais','croyais','croyait','croyions','croyiez','croyaient'],fut:['croirai','croiras','croira','croirons','croirez','croiront'],cond:['croirais','croirais','croirait','croirions','croiriez','croiraient'],subj:['croie','croies','croie','croyions','croyiez','croient']},
+  'écrire':{pres:['écris','écris','écrit','écrivons','écrivez','écrivent'],imp:['écrivais','écrivais','écrivait','écrivions','écriviez','écrivaient'],fut:['écrirai','écriras','écrira','écrirons','écrirez','écriront'],cond:['écrirais','écrirais','écrirait','écririons','écririez','écriraient'],subj:['écrive','écrives','écrive','écrivions','écriviez','écrivent']},
+  'lire':{pres:['lis','lis','lit','lisons','lisez','lisent'],imp:['lisais','lisais','lisait','lisions','lisiez','lisaient'],fut:['lirai','liras','lira','lirons','lirez','liront'],cond:['lirais','lirais','lirait','lirions','liriez','liraient'],subj:['lise','lises','lise','lisions','lisiez','lisent']},
+  'connaître':{pres:['connais','connais','connaît','connaissons','connaissez','connaissent'],imp:['connaissais','connaissais','connaissait','connaissions','connaissiez','connaissaient'],fut:['connaîtrai','connaîtras','connaîtra','connaîtrons','connaîtrez','connaîtront'],cond:['connaîtrais','connaîtrais','connaîtrait','connaîtrions','connaîtriez','connaîtraient'],subj:['connaisse','connaisses','connaisse','connaissions','connaissiez','connaissent']},
+  'suivre':{pres:['suis','suis','suit','suivons','suivez','suivent'],imp:['suivais','suivais','suivait','suivions','suiviez','suivaient'],fut:['suivrai','suivras','suivra','suivrons','suivrez','suivront'],cond:['suivrais','suivrais','suivrait','suivrions','suivriez','suivraient'],subj:['suive','suives','suive','suivions','suiviez','suivent']},
+  'vivre':{pres:['vis','vis','vit','vivons','vivez','vivent'],imp:['vivais','vivais','vivait','vivions','viviez','vivaient'],fut:['vivrai','vivras','vivra','vivrons','vivrez','vivront'],cond:['vivrais','vivrais','vivrait','vivrions','vivriez','vivraient'],subj:['vive','vives','vive','vivions','viviez','vivent']},
+  'courir':{pres:['cours','cours','court','courons','courez','courent'],imp:['courais','courais','courait','courions','couriez','couraient'],fut:['courrai','courras','courra','courrons','courrez','courront'],cond:['courrais','courrais','courrait','courrions','courriez','courraient'],subj:['coure','coures','coure','courions','couriez','courent']},
+  'ouvrir':{pres:['ouvre','ouvres','ouvre','ouvrons','ouvrez','ouvrent'],imp:['ouvrais','ouvrais','ouvrait','ouvrions','ouvriez','ouvraient'],fut:['ouvrirai','ouvriras','ouvrira','ouvrirons','ouvrirez','ouvriront'],cond:['ouvrirais','ouvrirais','ouvrirait','ouvririons','ouvririez','ouvriraient'],subj:['ouvre','ouvres','ouvre','ouvrions','ouvriez','ouvrent']},
+  'mourir':{pres:['meurs','meurs','meurt','mourons','mourez','meurent'],imp:['mourais','mourais','mourait','mourions','mouriez','mouraient'],fut:['mourrai','mourras','mourra','mourrons','mourrez','mourront'],cond:['mourrais','mourrais','mourrait','mourrions','mourriez','mourraient'],subj:['meure','meures','meure','mourions','mouriez','meurent']},
+  'valoir':{pres:['vaux','vaux','vaut','valons','valez','valent'],imp:['valais','valais','valait','valions','valiez','valaient'],fut:['vaudrai','vaudras','vaudra','vaudrons','vaudrez','vaudront'],cond:['vaudrais','vaudrais','vaudrait','vaudrions','vaudriez','vaudraient'],subj:['vaille','vailles','vaille','valions','valiez','vaillent']},
+  'craindre':{pres:['crains','crains','craint','craignons','craignez','craignent'],imp:['craignais','craignais','craignait','craignions','craigniez','craignaient'],fut:['craindrai','craindras','craindra','craindrons','craindrez','craindront'],cond:['craindrais','craindrais','craindrait','craindrions','craindriez','craindraient'],subj:['craigne','craignes','craigne','craignions','craigniez','craignent']},
+  'perdre':{pres:['perds','perds','perd','perdons','perdez','perdent'],imp:['perdais','perdais','perdait','perdions','perdiez','perdaient'],fut:['perdrai','perdras','perdra','perdrons','perdrez','perdront'],cond:['perdrais','perdrais','perdrait','perdrions','perdriez','perdraient'],subj:['perde','perdes','perde','perdions','perdiez','perdent']},
+  'vendre':{pres:['vends','vends','vend','vendons','vendez','vendent'],imp:['vendais','vendais','vendait','vendions','vendiez','vendaient'],fut:['vendrai','vendras','vendra','vendrons','vendrez','vendront'],cond:['vendrais','vendrais','vendrait','vendrions','vendriez','vendraient'],subj:['vende','vendes','vende','vendions','vendiez','vendent']},
+  'attendre':{pres:['attends','attends','attend','attendons','attendez','attendent'],imp:['attendais','attendais','attendait','attendions','attendiez','attendaient'],fut:['attendrai','attendras','attendra','attendrons','attendrez','attendront'],cond:['attendrais','attendrais','attendrait','attendrions','attendriez','attendraient'],subj:['attende','attendes','attende','attendions','attendiez','attendent']},
+  'répondre':{pres:['réponds','réponds','répond','répondons','répondez','répondent'],imp:['répondais','répondais','répondait','répondions','répondiez','répondaient'],fut:['répondrai','répondras','répondra','répondrons','répondrez','répondront'],cond:['répondrais','répondrais','répondrait','répondrions','répondriez','répondraient'],subj:['réponde','répondes','réponde','répondions','répondiez','répondent']},
+  'appeler':{pres:['appelle','appelles','appelle','appelons','appelez','appellent'],imp:['appelais','appelais','appelait','appelions','appeliez','appelaient'],fut:['appellerai','appelleras','appellera','appellerons','appellerez','appelleront'],cond:['appellerais','appellerais','appellerait','appellerions','appelleriez','appelleraient'],subj:['appelle','appelles','appelle','appelions','appeliez','appellent']},
+  'lever':{pres:['lève','lèves','lève','levons','levez','lèvent'],imp:['levais','levais','levait','levions','leviez','levaient'],fut:['lèverai','lèveras','lèvera','lèverons','lèverez','lèveront'],cond:['lèverais','lèverais','lèverait','lèverions','lèveriez','lèveraient'],subj:['lève','lèves','lève','levions','leviez','lèvent']},
+  'battre':{pres:['bats','bats','bat','battons','battez','battent'],imp:['battais','battais','battait','battions','battiez','battaient'],fut:['battrai','battras','battra','battrons','battrez','battront'],cond:['battrais','battrais','battrait','battrions','battriez','battraient'],subj:['batte','battes','batte','battions','battiez','battent']},
+  'mentir':{pres:['mens','mens','ment','mentons','mentez','mentent'],imp:['mentais','mentais','mentait','mentions','mentiez','mentaient'],fut:['mentirai','mentiras','mentira','mentirons','mentirez','mentiront'],cond:['mentirais','mentirais','mentirait','mentirions','mentiriez','mentiraient'],subj:['mente','mentes','mente','mentions','mentiez','mentent']},
+  'peindre':{pres:['peins','peins','peint','peignons','peignez','peignent'],imp:['peignais','peignais','peignait','peignions','peigniez','peignaient'],fut:['peindrai','peindras','peindra','peindrons','peindrez','peindront'],cond:['peindrais','peindrais','peindrait','peindrions','peindriez','peindraient'],subj:['peigne','peignes','peigne','peignions','peigniez','peignent']},
+  'produire':{pres:['produis','produis','produit','produisons','produisez','produisent'],imp:['produisais','produisais','produisait','produisions','produisiez','produisaient'],fut:['produirai','produiras','produira','produirons','produirez','produiront'],cond:['produirais','produirais','produirait','produirions','produiriez','produiraient'],subj:['produise','produises','produise','produisions','produisiez','produisent']},
+  'résoudre':{pres:['résous','résous','résout','résolvons','résolvez','résolvent'],imp:['résolvais','résolvais','résolvait','résolvions','résolviez','résolvaient'],fut:['résoudrai','résoudras','résoudra','résoudrons','résoudrez','résoudront'],cond:['résoudrais','résoudrais','résoudrait','résoudrions','résoudriez','résoudraient'],subj:['résolve','résolves','résolve','résolvions','résolviez','résolvent']},
+  'plaire':{pres:['plais','plais','plaît','plaisons','plaisez','plaisent'],imp:['plaisais','plaisais','plaisait','plaisions','plaisiez','plaisaient'],fut:['plairai','plairas','plaira','plairons','plairez','plairont'],cond:['plairais','plairais','plairait','plairions','plairiez','plairaient'],subj:['plaise','plaises','plaise','plaisions','plaisiez','plaisent']},
+};
+
+// ── Niveaux ──
+const LEVELS=['CP','CE1','CE2','CM1','CM2','6e','5e','4e','3e','2de','1re','Tle'];
+function lvlIdx(l){const i=LEVELS.indexOf(l);return i>=0?i:0;}
+const XP_LEVELS=[
+  {min:0,lbl:'Novice',ic:'🌱'},{min:80,lbl:'Apprenti',ic:'📖'},
+  {min:200,lbl:'Élève',ic:'✏️'},{min:450,lbl:'Confirmé',ic:'🎒'},
+  {min:850,lbl:'Expert',ic:'🎓'},{min:1500,lbl:'Érudit',ic:'⭐'},
+  {min:3000,lbl:'Maître',ic:'🏆'}
+];
+function getXPLevel(xp){let l=XP_LEVELS[0];for(const lv of XP_LEVELS)if(xp>=lv.min)l=lv;return l;}
+
+// ── Types d'exercices ──
+const OPS=[
+  {id:'conj_pres',lbl:'Présent',sub:'Indicatif présent',ic:'📝',min:'CP'},
+  {id:'conj_imp',lbl:'Imparfait',sub:'Indicatif imparfait',ic:'📖',min:'CE2'},
+  {id:'conj_fut',lbl:'Futur simple',sub:"Futur de l'indicatif",ic:'🚀',min:'CM1'},
+  {id:'conj_pc',lbl:'Passé composé',sub:'Auxiliaire + participe',ic:'⏪',min:'CM1'},
+  {id:'conj_pqp',lbl:'Plus-que-parfait',sub:'Temps du récit',ic:'⏮',min:'5e'},
+  {id:'conj_cond',lbl:'Conditionnel',sub:'Conditionnel présent',ic:'🎭',min:'4e'},
+  {id:'conj_subj',lbl:'Subjonctif',sub:'Subjonctif présent',ic:'🔮',min:'3e'},
+  {id:'homo',lbl:'Homophones',sub:'a/à · on/ont · est/et',ic:'🔊',min:'CE2'},
+  {id:'adj_accord',lbl:'Accord adj.',sub:'Genre & nombre',ic:'🔤',min:'CE2'},
+  {id:'gn_accord',lbl:'Groupe nominal',sub:'Accord dans le GN',ic:'📐',min:'CM1'},
+  {id:'nature',lbl:'Nature des mots',sub:'Nom · verbe · adj…',ic:'🏷',min:'CE1'},
+  {id:'ortho',lbl:'Orthographe',sub:'Bien écrire les mots',ic:'✏️',min:'CE1'},
+  {id:'synonyme',lbl:'Synonymes',sub:'Trouver le mot proche',ic:'🔗',min:'CE1'},
+  {id:'antonyme',lbl:'Antonymes',sub:'Trouver le contraire',ic:'↔️',min:'CE1'},
+  {id:'dictee',lbl:'Dictée',sub:'Écoute et écris la phrase',ic:'🎙',min:'CE1'},
+  {id:'phrase_corr',lbl:'Corriger la phrase',sub:"Trouve et corrige l'erreur",ic:'🔍',min:'CE2'},
+  {id:'genre',lbl:'Genre des noms',sub:'Masculin ou féminin ?',ic:'⚖️',min:'CP'},
+];
+
+// ── Homophones ── [phrase_avec_trou, correct, [faux], minLvl]
+const HOMO=[
+  ['Le chat ___ faim.','a',['à'],'CE2'],
+  ['Elle va ___ la piscine.','à',['a'],'CE2'],
+  ['Il pense ___ ses amis.','à',['a'],'CE2'],
+  ['Le chien ___ mangé son repas.','a',['à'],'CE2'],
+  ['___ joue dans le jardin.','On',['Ont'],'CE2'],
+  ['Les enfants ___ faim.','ont',['on'],'CE2'],
+  ['___ entend de la musique.','On',['Ont'],'CE2'],
+  ['Mes parents ___ voyagé.','ont',['on'],'CE2'],
+  ['Le ciel ___ bleu.','est',['et'],'CE2'],
+  ['Il lit ___ écrit en même temps.','et',['est'],'CE2'],
+  ['La fleur ___ rouge.','est',['et'],'CE2'],
+  ['Elle chante ___ danse.','et',['est'],'CE2'],
+  ['___ chien aboie fort.','Son',['Sont'],'CE2'],
+  ['Les oiseaux ___ dans le ciel.','sont',['son'],'CE2'],
+  ['Il range ___ cartable.','son',['sont'],'CE2'],
+  ['Elles ___ arrivées en retard.','sont',['son'],'CE2'],
+  ['Tu veux du lait ___ du jus ?','ou',['où'],'CE2'],
+  ['___ habites-tu ?','Où',['Ou'],'CE2'],
+  ['Je ne sais pas ___ il est.','où',['ou'],'CE2'],
+  ['___ il était fatigué, il continua.','Mais',['Mes'],'CM1'],
+  ['J\'ai oublié ___ affaires.','mes',['mais'],'CM1'],
+  ['___ fleurs sont magnifiques.','Ces',['Ses'],'CM1'],
+  ['Il promène ___ chiens.','ses',['ces'],'CM1'],
+  ["___ mon livre préféré.",'C\'est',["S'est"],'CM1'],
+  ["Elle ___ blessée en tombant.",'s\'est',["c'est"],'CM1'],
+  ['___ le monde est arrivé.','Tout',['Tous'],'CM1'],
+  ['___ les élèves ont réussi.','Tous',['Tout'],'CM1'],
+  ['___ livre est à moi.','Ce',['Se'],'CM2'],
+  ['Il ___ lave les mains.','se',['ce'],'CM2'],
+  ['___ matin, il pleut.','Ce',['Se'],'CM2'],
+  ['Pose-le ___.','là',["la","l'a"],'CM2'],
+  ['Je prends ___ valise.','la',["là","l'a"],'CM2'],
+  ["Il ___ vu hier.",'l\'a',['la','là'],'CM2'],
+  ['___ sœur est venue.','Ma',["M'a"],'CM2'],
+  ["Elle ___ appelé ce matin.",'m\'a',['ma'],'CM2'],
+  ['Je ___ ai parlé hier.','leur',['leurs'],'CM2'],
+  ['___ maison est grande.','Leur',['Leurs'],'CM2'],
+  ['Ils ont pris ___ affaires.','leurs',['leur'],'CM2'],
+  ['Il travaille ___ que son frère.','davantage',["d'avantage"],'6e'],
+  ['___ fatigué, il continua.','Quoique',['Quoi que'],'6e'],
+  ["Je ___ suis jamais allé.",'n\'y',['ni'],'5e'],
+  ["Il ne vient ___ aujourd'hui.",'ni',["n'y"],'5e'],
+  ['Il agit ___ qu\'il pense.','plutôt',['plus tôt'],'4e'],
+  ['Il est arrivé ___ que prévu.','plus tôt',['plutôt'],'4e'],
+  ['Il ___ levé très tôt ce matin.','s\'est',["c'est"],'CM1'],
+  ['___ une bonne idée !','C\'est',["S'est"],'CM1'],
+  ['Nous ___ promenés dans le parc.','nous sommes',['on a'],'5e'],
+  ['Il ne ___ pas de ça.','s\'agit',["c'agit"],'5e'],
+];
+
+// ── Adjectifs ── [ms, fs, mp, fp, minLvl]
+const ADJ=[
+  ['grand','grande','grands','grandes','CE2'],
+  ['petit','petite','petits','petites','CE2'],
+  ['fort','forte','forts','fortes','CE2'],
+  ['long','longue','longs','longues','CE2'],
+  ['chaud','chaude','chauds','chaudes','CE2'],
+  ['froid','froide','froids','froides','CE2'],
+  ['blanc','blanche','blancs','blanches','CE2'],
+  ['noir','noire','noirs','noires','CE2'],
+  ['rouge','rouge','rouges','rouges','CE2'],
+  ['vert','verte','verts','vertes','CE2'],
+  ['bleu','bleue','bleus','bleues','CE2'],
+  ['beau','belle','beaux','belles','CE2'],
+  ['nouveau','nouvelle','nouveaux','nouvelles','CE2'],
+  ['vieux','vieille','vieux','vieilles','CE2'],
+  ['heureux','heureuse','heureux','heureuses','CM1'],
+  ['gros','grosse','gros','grosses','CM1'],
+  ['doux','douce','doux','douces','CM1'],
+  ['faux','fausse','faux','fausses','CM1'],
+  ['épais','épaisse','épais','épaisses','CM1'],
+  ['bas','basse','bas','basses','CM1'],
+  ['léger','légère','légers','légères','CM1'],
+  ['dernier','dernière','derniers','dernières','CM1'],
+  ['premier','première','premiers','premières','CM1'],
+  ['entier','entière','entiers','entières','CM1'],
+  ['régulier','régulière','réguliers','régulières','CM1'],
+  ['gentil','gentille','gentils','gentilles','CM2'],
+  ['pareil','pareille','pareils','pareilles','CM2'],
+  ['cruel','cruelle','cruels','cruelles','CM2'],
+  ['naturel','naturelle','naturels','naturelles','CM2'],
+  ['actif','active','actifs','actives','CM2'],
+  ['vif','vive','vifs','vives','CM2'],
+  ['neuf','neuve','neufs','neuves','CM2'],
+  ['bref','brève','brefs','brèves','CM2'],
+  ['sot','sotte','sots','sottes','CM2'],
+  ['muet','muette','muets','muettes','CM2'],
+  ['jaloux','jalouse','jaloux','jalouses','6e'],
+  ['roux','rousse','roux','rousses','6e'],
+  ['amoureux','amoureuse','amoureux','amoureuses','6e'],
+  ['cher','chère','chers','chères','6e'],
+  ['fier','fière','fiers','fières','6e'],
+  ['sec','sèche','secs','sèches','6e'],
+  ['public','publique','publics','publiques','6e'],
+  ['grec','grecque','grecs','grecques','6e'],
+  ['demi','demie','demi','demies','5e'],
+  ['tout','toute','tous','toutes','5e'],
+  ['nul','nulle','nuls','nulles','5e'],
+  ['tel','telle','tels','telles','5e'],
+  ['mortel','mortelle','mortels','mortelles','5e'],
+  ['pareil','pareille','pareils','pareilles','5e'],
+  ['vermeil','vermeille','vermeils','vermeilles','4e'],
+];
+
+// ── Noms (accord) ── [ms, fs, mp, fp, minLvl]
+const NOUNS=[
+  ['homme','femme','hommes','femmes','CE1'],
+  ['garçon','fille','garçons','filles','CE1'],
+  ['chat','chatte','chats','chattes','CM1'],
+  ['chanteur','chanteuse','chanteurs','chanteuses','CM1'],
+  ['acteur','actrice','acteurs','actrices','CM2'],
+  ['directeur','directrice','directeurs','directrices','CM2'],
+  ['lion','lionne','lions','lionnes','CM2'],
+  ['roi','reine','rois','reines','6e'],
+  ['boulanger','boulangère','boulangers','boulangères','CM1'],
+  ['écolier','écolière','écoliers','écolières','CE2'],
+  ['élève','élève','élèves','élèves','CE2'],
+  ['ami','amie','amis','amies','CE1'],
+];
+
+// ── Groupes nominaux ── [déterminant, nom, adj_ms, genre, nombre, minLvl]
+const GN=[
+  ['un','chat','noir','m','s','CE2'],
+  ['une','fleur','rouge','f','s','CE2'],
+  ['le','jardin','grand','m','s','CE2'],
+  ['la','maison','blanc','f','s','CE2'],
+  ['les','oiseaux','bleu','m','p','CE2'],
+  ['les','filles','grand','f','p','CE2'],
+  ['un','livre','vieux','m','s','CM1'],
+  ['une','histoire','beau','f','s','CM1'],
+  ['des','garçons','gentil','m','p','CM1'],
+  ['des','fenêtres','ouvert','f','p','CM1'],
+  ['un','animal','léger','m','s','CM2'],
+  ['une','leçon','difficile','f','s','CM2'],
+  ['des','solutions','nouveau','f','p','CM2'],
+  ['un','élève','sérieux','m','s','6e'],
+  ['une','chanson','doux','f','s','6e'],
+  ['des','problèmes','complexe','m','p','6e'],
+  ['un','regard','vif','m','s','6e'],
+  ['des','routes','long','f','p','5e'],
+  ['un','choix','difficile','m','s','5e'],
+  ['une','réponse','bref','f','s','5e'],
+];
+
+// ── Nature des mots ── [phrase, mot_cible, correct, [faux], minLvl]
+const NATURE=[
+  ['Le __chat__ dort.','chat','nom',['verbe','adjectif','adverbe'],'CE1'],
+  ['Il __court__ vite.','court','verbe',['nom','adjectif','adverbe'],'CE1'],
+  ['La __grande__ maison.','grande','adjectif',['nom','verbe','adverbe'],'CE1'],
+  ['Elle chante __bien__.','bien','adverbe',['nom','verbe','adjectif'],'CE1'],
+  ['__Le__ chat dort.','Le','déterminant',['nom','verbe','préposition'],'CE2'],
+  ['Il parle __à__ Marie.','à','préposition',['déterminant','verbe','adjectif'],'CE2'],
+  ['__Elle__ joue.','Elle','pronom',['nom','verbe','adjectif'],'CE2'],
+  ['Il court __très__ vite.','très','adverbe',['nom','verbe','adjectif'],'CM1'],
+  ['__Mais__ il est tard.','Mais','conjonction',['déterminant','adjectif','adverbe'],'CM1'],
+  ['__Hélas__!','Hélas','interjection',['nom','verbe','adverbe'],'CM1'],
+  ['La maison __de__ mon ami.','de','préposition',['déterminant','conjonction','adverbe'],'CM1'],
+  ['Je vais __chez__ le médecin.','chez','préposition',['déterminant','adverbe','conjonction'],'CM2'],
+  ['__Nous__ travaillons.','Nous','pronom',['nom','verbe','adjectif'],'CM2'],
+  ['Il est venu __car__ il avait faim.','car','conjonction',['préposition','adverbe','pronom'],'CM2'],
+  ['__Bravo__ !','Bravo','interjection',['adjectif','adverbe','nom'],'CM2'],
+  ['Elle est __souvent__ absente.','souvent','adverbe',['adjectif','nom','conjonction'],'6e'],
+  ['La __beauté__ du paysage.','beauté','nom',['verbe','adjectif','adverbe'],'CM1'],
+  ['__Pourquoi__ pleures-tu ?','Pourquoi','adverbe',['conjonction','préposition','déterminant'],'CM2'],
+  ['Il habite __là-bas__.','là-bas','adverbe',['préposition','nom','adjectif'],'CM1'],
+  ['__Leur__ maison est belle.','Leur','déterminant',['pronom','adjectif','adverbe'],'CM2'],
+  ['Il chante __et__ danse.','et','conjonction',['préposition','adverbe','déterminant'],'CE2'],
+  ['__Quoique__ fatigué, il travailla.','Quoique','conjonction',['préposition','adverbe','pronom'],'5e'],
+  ['Elle parle __doucement__.','doucement','adverbe',['adjectif','nom','verbe'],'CM1'],
+  ['Il a une __belle__ voiture.','belle','adjectif',['nom','adverbe','pronom'],'CE2'],
+  ['__Mon__ chien est gentil.','Mon','déterminant',['pronom','adjectif','conjonction'],'CE1'],
+];
+
+// ── Orthographe ── [correct, faux1, faux2, faux3, faux4, minLvl]
+const ORTHO=[
+  ['maison','maisson','maisont','mazon','maizon','CP'],
+  ['école','ecole','ekole','éscole','échôle','CP'],
+  ['soleil','solei','soleille','solleil','souleil','CP'],
+  ['oiseau','oizeau','oisaux','oisseau','oiseo','CP'],
+  ['cahier','caier','cahié','kaier','cahiaire','CE1'],
+  ['tableau','tableo','tablau','tablo','tablaux','CE1'],
+  ['cerise','serise','cherise','cerice','cerlise','CE1'],
+  ['crayon','creyons','craiyon','craion','creyont','CE1'],
+  ['fenêtre','fenetre','fenètre','fennettre','fênetre','CE1'],
+  ['grenouille','grenouile','grenuille','grenouylle','grenuiylle','CE2'],
+  ['papillon','papilion','pappillon','papilyon','papiyon','CE2'],
+  ['château','chateau','châtaud','chatôt','chataud','CE2'],
+  ['champignon','chanpignon','champignion','champigon','champinnon','CE2'],
+  ['écureuil','écureille','ecureuil','éscureuil','éskureuil','CE2'],
+  ['médecin','médecain','médesin','médeçin','médcin','CM1'],
+  ['printemps','preintemps','printant','printamps','praintemps','CM1'],
+  ['automne','autone','automone','autonne','autonme','CM1'],
+  ['famille','famile','famiye','failme','famiyle','CM1'],
+  ['difficile','dificile','difficille','diffisile','difficil','CM1'],
+  ['cœur','coeur','queur','choeur','quoeur','CM2'],
+  ['œil','eil','oeuil','oeill','oueil','CM2'],
+  ['nœud','noeud','noeux','noud','noued','CM2'],
+  ['développer','developper','développper','developpez','développée','6e'],
+  ['appartement','appartament','apartemant','appartment','appertement','6e'],
+  ['exceptionnel','exseptionnel','exceptionel','exzeptionnel','exeptionnel','6e'],
+  ['conscient','consient','consciant','conssiants','consiènt','5e'],
+  ['rythme','ritme','rhytme','rythmme','rithme','5e'],
+  ['gymnaste','gimnaste','gymnasste','gymnastiqu','gynmaste','CM2'],
+  ['nénuphar','nenuphar','nénupar','nénufar','nénuphard','4e'],
+  ['yacht','yatsh','yach','yatcht','iatsh','4e'],
+  ['oignon','oingnon','ognion','oignion','oingnion','5e'],
+  ['abîme','abime','abîmme','abymes','abimme','6e'],
+  ['chrysanthème','crysanthème','chrysantème','chrisanthème','chrysanntème','CM2'],
+  ['perpendiculaire','perpandiculaire','perpendicullaire','perpendiculère','perpediculaire','5e'],
+  ['homogène','homojène','homogenne','omogène','homôgène','5e'],
+  ['hypothèse','hipothèse','hypothese','hyppothèse','hypothèze','4e'],
+  ['parallèle','paralèle','parallelle','paralelle','parralèle','4e'],
+  ['vocabulaire','vocabolaire','vocabulère','vocaboulaire','vocabaulaire','CM1'],
+  ['grammaire','gramaire','grammère','grammair','gramayre','CE2'],
+  ['orthographe','ortographe','orthografe','hortographe','orthographfe','CE2'],
+];
+
+// ── Synonymes ──
+// [mot, synonyme_correct, [faux_proches_mais_pas_exacts], minLvl]
+const SYNO=[
+  // CE1 — leurres = synonymes proches mais pas exacts
+  ['content','heureux',['satisfait','ravi','enchanté'],'CE1'],
+  ['triste','malheureux',['chagriné','morose','mélancolique'],'CE1'],
+  ['rapide','vite',['prompt','pressé','brusque'],'CE1'],
+  ['grand','immense',['vaste','gigantesque','énorme'],'CE1'],
+  ['petit','minuscule',['menu','infime','microscopique'],'CE1'],
+  ['beau','joli',['magnifique','splendide','superbe'],'CE1'],
+  ['ami','camarade',['copain','compagnon','associé'],'CE1'],
+  ['maison','demeure',['habitation','logement','domicile'],'CE1'],
+  ['regarder','observer',['contempler','examiner','fixer'],'CE1'],
+  ['marcher','avancer',['déambuler','cheminer','progresser'],'CE1'],
+  // CE2
+  ['chaud','brûlant',['tiède','ardent','torride'],'CE2'],
+  ['froid','glacial',['frais','gelé','frigide'],'CE2'],
+  ['fort','puissant',['robuste','vigoureux','solide'],'CE2'],
+  ['faible','fragile',['chétif','délicat','frêle'],'CE2'],
+  ['courageux','brave',['vaillant','audacieux','intrépide'],'CE2'],
+  ['peureux','craintif',['timide','hésitant','timoré'],'CE2'],
+  ['gentil','aimable',['doux','bienveillant','attentionné'],'CE2'],
+  ['méchant','cruel',['malveillant','mauvais','hostile'],'CE2'],
+  ['parler','discuter',['converser','bavarder','dialoguer'],'CE2'],
+  ['commencer','débuter',['entamer','amorcer','initier'],'CE2'],
+  ['finir','terminer',['achever','clore','conclure'],'CE2'],
+  ['dormir','sommeiller',['assoupir','reposer','siester'],'CE2'],
+  ['tomber','chuter',['dégringoler','trébucher','s\'effondrer'],'CE2'],
+  ['cacher','dissimuler',['masquer','occulter','voiler'],'CE2'],
+  ['chercher','quêter',['fouiller','explorer','prospecter'],'CE2'],
+  // CM1
+  ['fatigué','épuisé',['las','éreinté','exténué'],'CM1'],
+  ['colère','fureur',['rage','courroux','irritation'],'CM1'],
+  ['peur','crainte',['appréhension','angoisse','frayeur'],'CM1'],
+  ['aide','secours',['assistance','soutien','appui'],'CM1'],
+  ['bizarre','étrange',['curieux','singulier','insolite'],'CM1'],
+  ['difficile','ardu',['complexe','épineux','laborieux'],'CM1'],
+  ['facile','aisé',['simple','accessible','élémentaire'],'CM1'],
+  ['vieux','ancien',['antique','suranné','désuet'],'CM1'],
+  ['neuf','récent',['nouveau','moderne','contemporain'],'CM1'],
+  ['trouver','découvrir',['dénicher','repérer','déceler'],'CM1'],
+  ['rapide','prompt',['alerte','vif','preste'],'CM1'],
+  ['lent','nonchalant',['languissant','traînant','apathique'],'CM1'],
+  ['riche','aisé',['opulent','fortuné','prospère'],'CM1'],
+  ['pauvre','indigent',['démuni','nécessiteux','misérable'],'CM1'],
+  // CM2
+  ['joyeux','gai',['enjoué','jovial','allègre'],'CM2'],
+  ['calme','serein',['paisible','tranquille','apaisé'],'CM2'],
+  ['intelligent','habile',['astucieux','perspicace','ingénieux'],'CM2'],
+  ['penser','réfléchir',['méditer','songer','cogiter'],'CM2'],
+  ['construire','bâtir',['édifier','ériger','élever'],'CM2'],
+  ['détruire','démolir',['raser','abattre','anéantir'],'CM2'],
+  ['montrer','exhiber',['exposer','révéler','présenter'],'CM2'],
+  ['utiliser','employer',['exploiter','recourir','mobiliser'],'CM2'],
+  ['obtenir','acquérir',['décrocher','arracher','soutirer'],'CM2'],
+  ['répondre','répliquer',['rétorquer','objecter','contredire'],'CM2'],
+  // 6e
+  ['lumineux','éclatant',['brillant','resplendissant','rayonnant'],'6e'],
+  ['sombre','obscur',['ténébreux','opaque','assombri'],'6e'],
+  ['mystérieux','énigmatique',['sibyllin','impénétrable','hermétique'],'6e'],
+  ['courageux','intrépide',['téméraire','audacieux','vaillant'],'6e'],
+  ['sage','prudent',['sensé','avisé','raisonnable'],'6e'],
+  ['généreux','prodigue',['libéral','charitable','altruiste'],'6e'],
+  ['avare','pingre',['radin','mesquin','ladre'],'6e'],
+  ['honnête','intègre',['probe','loyal','droit'],'6e'],
+  ['espoir','espérance',['attente','foi','confiance'],'6e'],
+  ['peine','chagrin',['douleur','affliction','tourment'],'6e'],
+  // 5e+
+  ['abondant','copieux',['plantureux','foisonnant','prolifique'],'5e'],
+  ['rare','précieux',['singulier','insolite','exceptionnel'],'5e'],
+  ['apparent','visible',['manifeste','patent','ostensible'],'5e'],
+  ['caché','latent',['sous-jacent','occulte','recélé'],'5e'],
+  ['vague','imprécis',['flou','approximatif','nébuleux'],'5e'],
+  ['précis','exact',['rigoureux','minutieux','pointu'],'5e'],
+  ['permettre','autoriser',['tolérer','accepter','admettre'],'5e'],
+  ['interdire','prohiber',['défendre','bannir','exclure'],'5e'],
+];
+
+// ── Antonymes ──
+// [mot, antonyme_correct, [faux_dans_le_même_champ_sémantique], minLvl]
+const ANTO=[
+  // CE1
+  ['grand','petit',['court','bas','mince'],'CE1'],
+  ['petit','grand',['haut','long','épais'],'CE1'],
+  ['jour','nuit',['soir','crépuscule','aube'],'CE1'],
+  ['nuit','jour',['matin','midi','après-midi'],'CE1'],
+  ['chaud','froid',['tiède','frais','glacé'],'CE1'],
+  ['froid','chaud',['tiède','doux','brûlant'],'CE1'],
+  ['fort','faible',['fragile','doux','léger'],'CE1'],
+  ['content','mécontent',['triste','déçu','chagriné'],'CE1'],
+  ['propre','sale',['souillé','crasseux','immonde'],'CE1'],
+  ['beau','laid',['moche','terne','disgracieux'],'CE1'],
+  // CE2
+  ['rapide','lent',['nonchalant','traînant','mou'],'CE2'],
+  ['vrai','faux',['inexact','erroné','mensonger'],'CE2'],
+  ['ami','ennemi',['adversaire','rival','opposant'],'CE2'],
+  ['allumer','éteindre',['obscurcir','assombrir','noircir'],'CE2'],
+  ['ouvrir','fermer',['clore','verrouiller','boucher'],'CE2'],
+  ['monter','descendre',['tomber','dégringoler','plonger'],'CE2'],
+  ['entrer','sortir',['quitter','partir','fuir'],'CE2'],
+  ['chaud','froid',['tiède','frais','glacé'],'CE2'],
+  ['plein','vide',['creux','vague','dégarni'],'CE2'],
+  ['lourd','léger',['aérien','mince','fluide'],'CE2'],
+  // CM1
+  ['commencer','finir',['terminer','achever','conclure'],'CM1'],
+  ['rire','pleurer',['sangloter','pleurnicher','geindre'],'CM1'],
+  ['facile','difficile',['complexe','ardu','laborieux'],'CM1'],
+  ['gentil','méchant',['cruel','malveillant','hostile'],'CM1'],
+  ['courage','lâcheté',['couardise','poltronnerie','timidité'],'CM1'],
+  ['riche','pauvre',['démuni','indigent','nécessiteux'],'CM1'],
+  ['plein','vide',['creux','dégarni','lacunaire'],'CM1'],
+  ['avancer','reculer',['retraiter','céder','fuir'],'CM1'],
+  // CM2
+  ['clair','sombre',['obscur','ténébreux','opaque'],'CM2'],
+  ['doux','rude',['brutal','brusque','sévère'],'CM2'],
+  ['intérieur','extérieur',['dehors','au-delà','alentour'],'CM2'],
+  ['présent','absent',['lointain','éloigné','parti'],'CM2'],
+  ['réussir','échouer',['rater','manquer','faillir'],'CM2'],
+  ['construire','démolir',['détruire','abattre','raser'],'CM2'],
+  ['acheter','vendre',['céder','revendre','troquer'],'CM2'],
+  ['demander','répondre',['répliquer','rétorquer','objecter'],'CM2'],
+  // 6e
+  ['optimiste','pessimiste',['défaitiste','alarmiste','sceptique'],'6e'],
+  ['courageux','lâche',['peureux','craintif','hésitant'],'6e'],
+  ['généreux','avare',['égoïste','radin','mesquin'],'6e'],
+  ['honnête','malhonnête',['fourbe','trompeur','hypocrite'],'6e'],
+  ['paix','guerre',['conflit','combat','belligérance'],'6e'],
+  ['ancien','moderne',['récent','nouveau','contemporain'],'6e'],
+  ['clarté','obscurité',['ombre','opacité','noirceur'],'6e'],
+  ['liberté','servitude',['esclavage','contrainte','joug'],'6e'],
+  // 5e+
+  ['abondant','rare',['précieux','singulier','limité'],'5e'],
+  ['apparent','caché',['latent','occulte','dissimulé'],'5e'],
+  ['actif','passif',['inactif','oisif','immobile'],'5e'],
+  ['complexe','simple',['élémentaire','basique','rudimentaire'],'5e'],
+  ['superficiel','profond',['intense','abyssal','pénétrant'],'5e'],
+  ['permettre','interdire',['prohiber','défendre','bannir'],'5e'],
+  ['attirer','repousser',['éloigner','rebuter','écarter'],'5e'],
+];
+
+// ── Dictée ── [phrase, minLvl]
+const DICTEE_DATA=[
+  // CP
+  ['Le chat dort.','CP'],
+  ['La balle est rouge.','CP'],
+  ['Mon ami joue.','CP'],
+  ['Le soleil brille.','CP'],
+  ['Il fait beau.','CP'],
+  // CE1
+  ['Le chien court dans le jardin.','CE1'],
+  ['Ma mère prépare le repas.','CE1'],
+  ['Les enfants jouent au ballon.','CE1'],
+  ['Le lapin mange des carottes.','CE1'],
+  ['Elle lit un livre intéressant.','CE1'],
+  ['Le petit chat boit du lait.','CE1'],
+  ['Mon papa travaille tous les jours.','CE1'],
+  ["Il fait beau aujourd'hui.",'CE1'],
+  ['Je range mes affaires dans ma chambre.','CE1'],
+  ['La maîtresse lit une belle histoire.','CE1'],
+  // CE2
+  ['Le petit chat blanc dort sur le canapé.','CE2'],
+  ['Les grandes fleurs rouges poussent dans le jardin.','CE2'],
+  ['Mon frère aime beaucoup le chocolat.','CE2'],
+  ['Les enfants sont partis à l\'école.','CE2'],
+  ['Notre maison est à côté de la forêt.','CE2'],
+  ['Le chat gris saute sur la chaise.','CE2'],
+  ['Elle range ses affaires dans son cartable.','CE2'],
+  ['Les élèves écrivent une belle histoire.','CE2'],
+  ['Nous avons joué au foot avec nos amis.','CE2'],
+  ['Le soir, ma grand-mère raconte des histoires.','CE2'],
+  // CM1
+  ['Le vieux château se dresse au sommet de la colline.','CM1'],
+  ['La maîtresse corrige les cahiers de ses élèves.','CM1'],
+  ['Pendant les vacances, nous allons à la montagne.','CM1'],
+  ['Les élèves ont travaillé toute la journée avec sérieux.','CM1'],
+  ['Le jardinier plante des fleurs sous le soleil du matin.','CM1'],
+  ['Mon grand-père raconte de belles histoires le soir.','CM1'],
+  ['Le renard roux traverse rapidement la forêt silencieuse.','CM1'],
+  ['Chaque matin, elle prépare son cartable avec soin.','CM1'],
+  // CM2
+  ['Les beaux oiseaux blancs s\'envolaient au-dessus du lac.','CM2'],
+  ['La cuisinière préparait un délicieux gâteau au chocolat.','CM2'],
+  ['Malgré le froid, les enfants jouaient dehors avec enthousiasme.','CM2'],
+  ['La bibliothèque municipale possède des milliers de livres.','CM2'],
+  ['Les explorateurs traversèrent la forêt pendant trois jours.','CM2'],
+  ['Il avait soigneusement plié sa lettre avant de l\'envoyer.','CM2'],
+  // 6e
+  ['Il était une fois une vieille sorcière qui vivait seule.','6e'],
+  ['Les explorateurs parcouraient les forêts à la recherche de trésors.','6e'],
+  ['Bien qu\'il fît froid, les enfants jouaient dehors avec enthousiasme.','6e'],
+  ['La rivière coulait doucement entre les rochers recouverts de mousse.','6e'],
+  ['Depuis le sommet, on apercevait les lumières de la ville au loin.','6e'],
+  ['Quoique fatigué, il poursuivit sa route sans se plaindre.','6e'],
+  // 5e
+  ["Lorsqu'elle arriva, tout le monde s'était déjà réuni autour de la table.",'5e'],
+  ["Les scientifiques ont découvert une nouvelle espèce d'insecte en Amazonie.",'5e'],
+  ["Le philosophe affirme que la connaissance est la source de la liberté.",'5e'],
+  ["Il suffit parfois d'un seul mot pour changer le cours d'une conversation.",'5e'],
+  // 4e+
+  ["Malgré ses efforts considérables, il n'avait pas réussi à convaincre ses adversaires.",'4e'],
+  ["La beauté de ce paysage m'a profondément ému lors de mon premier voyage.",'4e'],
+  ["Les hypothèses scientifiques doivent être vérifiées par l'expérience.",'4e'],
+  ["Ce roman, dont l'intrigue se déroule au XVIIe siècle, est d'une grande complexité.",'3e'],
+];
+
+// ── Phrases à corriger ──
+// [phrase_erreur, mot_faux, correction, [distracteurs_morphologiques], explication, minLvl]
+const PHRASE_CORR=[
+  // ── Accord sujet-verbe ──
+  ['Les enfants joue dans le jardin.','joue','jouent',
+    ['joue','joues','jouons'],
+    'Sujet pluriel "les enfants" → terminaison -ent.','CE2'],
+  ['Le chat et le chien mange ensemble.','mange','mangent',
+    ['mange','manges','mangeons'],
+    'Deux sujets coordonnés = pluriel → -ent.','CM1'],
+  ['Vous doit travailler plus sérieusement.','doit','devez',
+    ['doit','doivent','dois'],
+    '"Vous" → "devoir" prend -ez.','CM1'],
+  ['Ils court très vite sur la piste.','court','courent',
+    ['court','courts','courez'],
+    '"Ils" → terminaison -ent.','CE2'],
+  ['Elle chante et ses amies aussi chante.','chante','chantent',
+    ['chante','chantons','chantez'],
+    '"Ses amies" = sujet pluriel → -ent.','CE2'],
+  ['Mon père et ma mère travaille beaucoup.','travaille','travaillent',
+    ['travaille','travailles','travaillons'],
+    'Deux sujets = pluriel → -ent.','CM1'],
+  ['Ni lui ni elle ne vient aujourd\'hui.','vient','viennent',
+    ['vient','viens','venez'],
+    '"Ni... ni..." avec deux sujets → pluriel.','5e'],
+  // ── Accord adjectif ──
+  ['Elle a acheté des roses rouge.','rouge','rouges',
+    ['rouge','rougeâtre','rougis'],
+    '"Roses" est féminin pluriel → -es.','CE2'],
+  ['Les garçons semblaient très content.','content','contents',
+    ['content','contente','contentes'],
+    'Adjectif attribut masculin pluriel → -s.','CM1'],
+  ['Le chat et la chienne sont belle.','belle','beaux',
+    ['belle','belles','bel'],
+    'Deux sujets dont un masculin → masculin pluriel.','CM2'],
+  ['Les filles paraissaient fatigué.','fatigué','fatiguées',
+    ['fatiguée','fatigués','fatigué'],
+    'Adjectif attribut féminin pluriel → -ées.','CM1'],
+  ['Ce sont des histoires passionnant.','passionnant','passionnantes',
+    ['passionnant','passionnants','passionnante'],
+    '"Histoires" féminin pluriel → -antes.','CM2'],
+  ['Il a les yeux grand ouvert.','grand','grands',
+    ['grande','grandes','grand'],
+    '"Yeux" est masculin pluriel → -s.','CM2'],
+  // ── Participe passé avec être ──
+  ['Les élèves sont arrivé en retard.','arrivé','arrivés',
+    ['arrivé','arrivée','arrivées'],
+    'Avec "être", accord avec le sujet masculin pluriel → -és.','CM2'],
+  ['Nous sommes aller au cinéma hier.','aller','allés',
+    ['aller','allé','allées'],
+    'Avec "être", participe accordé avec le sujet.','5e'],
+  ['Elle est tombé dans l\'escalier.','tombé','tombée',
+    ['tombé','tombés','tomber'],
+    'Sujet féminin singulier → participe en -ée.','CM2'],
+  ['Mes sœurs sont parti en voyage.','parti','parties',
+    ['partis','partie','partir'],
+    'Sujet féminin pluriel → participe en -ies.','CM2'],
+  ['Il est rentré, elle aussi est rentré.','rentré','rentrée',
+    ['rentrés','rentrer','rentrai'],
+    'Sujet féminin singulier → accord en -ée.','CM2'],
+  // ── Participe passé avec avoir ──
+  ['Les lettres que j\'ai écrit.','écrit','écrites',
+    ['écrit','écrits','écrire'],
+    'COD "lettres" féminin pluriel avant le verbe → -es.','5e'],
+  ['La chanson qu\'il a composé est belle.','composé','composée',
+    ['composé','composés','composer'],
+    '"Chanson" COD féminin singulier avant → -ée.','5e'],
+  ['Les films que nous avons regardé.','regardé','regardés',
+    ['regardé','regardée','regarder'],
+    'COD "films" masculin pluriel avant → -és.','5e'],
+  ['Elle les a tous invité.','invité','invités',
+    ['invité','invitée','inviter'],
+    '"Les" = COD masculin pluriel avant le verbe → -és.','5e'],
+  ['La robe qu\'elle a cousue est belle.','cousue','cousue',
+    ['cousu','cousus','coudre'],
+    '"Robe" COD féminin singulier avant → -ue. Déjà correct.','4e'],
+  // ── Homophones ──
+  ['On a beaucoup de choses a faire.','a','à',
+    ['a','as','ont'],
+    '"À" préposition ≠ "a" verbe avoir.','CE2'],
+  ['Il a mit son manteau avant de sortir.','mit','mis',
+    ['mit','mît','mettre'],
+    'Le participe passé de "mettre" s\'écrit "mis".','CM2'],
+  ["Elle c'est trompée de chemin.",'c\'est','s\'est',
+    ["c'est","c'était","s'était"],
+    '"S\'est" = passé composé pronominal.','CM2'],
+  ['Le chat dort sur sont coussin.','sont','son',
+    ['sont','ont','mon'],
+    '"Son" est un déterminant possessif.','CE2'],
+  ['Il ce couche tôt tous les soirs.','ce','se',
+    ['ce','ses','ces'],
+    '"Se" est un pronom réfléchi (se coucher).','CM1'],
+  // ── Orthographe ──
+  ['Il est toujours fatigé après le sport.','fatigé','fatigué',
+    ['fatigé','fatiguais','fatiguer'],
+    '"Fatigué" s\'écrit avec u avant le é.','CE2'],
+  ['La maitresse a expliqué la leçon.','maitresse','maîtresse',
+    ['maitresse','maîtresses','maîtrèsse'],
+    '"Maîtresse" prend un accent circonflexe sur le î.','CM2'],
+  ['Il pleut, prenez vos paraluies.','paraluies','parapluies',
+    ['paraluies','parapluie','para-pluies'],
+    '"Parapluie" s\'écrit p-a-r-a-p-l-u-i-e.','CM1'],
+  ['Les cerisiers sont en fleure au printemps.','fleure','fleur',
+    ['fleure','fleures','fleurt'],
+    '"Fleur" ne prend pas de -e final.','CE2'],
+];
+
+// ── Genre des noms ── [mot, genre_correct, [faux], minLvl]
+const GENRE_DATA=[
+  // CP/CE1
+  ['soleil','masculin',['féminin'],'CP'],
+  ['lune','féminin',['masculin'],'CP'],
+  ['chien','masculin',['féminin'],'CP'],
+  ['fleur','féminin',['masculin'],'CP'],
+  ['arbre','masculin',['féminin'],'CE1'],
+  ['table','féminin',['masculin'],'CE1'],
+  ['livre','masculin',['féminin'],'CE1'],
+  ['maison','féminin',['masculin'],'CE1'],
+  ['jardin','masculin',['féminin'],'CE1'],
+  ['école','féminin',['masculin'],'CE1'],
+  ['ballon','masculin',['féminin'],'CE1'],
+  ['forêt','féminin',['masculin'],'CE1'],
+  // CE2/CM1
+  ['tomate','féminin',['masculin'],'CE2'],
+  ['nuage','masculin',['féminin'],'CE2'],
+  ['plage','féminin',['masculin'],'CE2'],
+  ['silence','masculin',['féminin'],'CE2'],
+  ['image','féminin',['masculin'],'CM1'],
+  ['problème','masculin',['féminin'],'CM1'],
+  ['musique','féminin',['masculin'],'CM1'],
+  ['sourire','masculin',['féminin'],'CM1'],
+  ['courage','masculin',['féminin'],'CM1'],
+  ['amour','masculin',['féminin'],'CM1'],
+  ['légume','masculin',['féminin'],'CM1'],
+  ['incendie','masculin',['féminin'],'CM1'],
+  ['comète','féminin',['masculin'],'CM1'],
+  ['pétale','masculin',['féminin'],'CM2'],
+  ['oasis','féminin',['masculin'],'CM2'],
+  ['tentacule','masculin',['féminin'],'CM2'],
+  ['espace','masculin',['féminin'],'CM2'],
+  ['manche','féminin',['masculin'],'CM2'],
+  ['tour','féminin',['masculin'],'CM2'],
+  ['poêle','masculin',['féminin'],'CM2'],
+  ['voile','masculin',['féminin'],'CM2'],
+  // 6e — pièges classiques
+  ['ivoire','masculin',['féminin'],'6e'],
+  ['amalgame','masculin',['féminin'],'6e'],
+  ['effluve','masculin',['féminin'],'6e'],
+  ['astérisque','masculin',['féminin'],'6e'],
+  ['épithète','féminin',['masculin'],'6e'],
+  ['enzyme','féminin',['masculin'],'6e'],
+  ['anagramme','féminin',['masculin'],'6e'],
+  ['énigme','féminin',['masculin'],'6e'],
+  // 5e+
+  ['alvéole','féminin',['masculin'],'5e'],
+  ['azalée','féminin',['masculin'],'5e'],
+  ['obélisque','masculin',['féminin'],'5e'],
+  ['hémisphère','masculin',['féminin'],'5e'],
+  ['armistice','masculin',['féminin'],'4e'],
+  ['apogée','masculin',['féminin'],'4e'],
+  ['équinoxe','masculin',['féminin'],'3e'],
+  ['sortilège','masculin',['féminin'],'3e'],
+  ['chrysalide','féminin',['masculin'],'3e'],
+  ['phalange','féminin',['masculin'],'4e'],
+];
+
+// ── Constantes de jeu ──
+const TENSE_LBL={pres:'présent',imp:'imparfait',fut:'futur simple',pc:'passé composé',pqp:'plus-que-parfait',cond:'conditionnel présent',subj:'subjonctif présent'};
+const SUBJECTS=['je','tu','il/elle','nous','vous','ils/elles'];
+const SUBJ_S=['je','tu','il','nous','vous','ils'];
+const AVATS=['🧒','👦','👧','🧑','👨','👩','🧔','👴','👵','🎓','🦊','🐼','🐸','🦁','🐧','🤖','👾','🧸','🌟','🏆'];
+
+// ── Badges ──
+const BADGES=[
+  {id:'first',ic:'🎯',nm:'Premier pas',cond:p=>p.totalQ>=1},
+  {id:'x10',ic:'🔟',nm:'10 questions',cond:p=>p.totalQ>=10},
+  {id:'x100',ic:'💯',nm:'Centurion',cond:p=>p.totalQ>=100},
+  {id:'x500',ic:'🏅',nm:'Marathonien',cond:p=>p.totalQ>=500},
+  {id:'perfect',ic:'⭐',nm:'Sans faute',cond:p=>p.perfectRounds>=1},
+  {id:'p5',ic:'🌟',nm:'5 sessions parfaites',cond:p=>p.perfectRounds>=5},
+  {id:'combo5',ic:'🔥',nm:'Combo x5',cond:p=>p.maxCombo>=5},
+  {id:'combo10',ic:'💥',nm:'Combo x10',cond:p=>p.maxCombo>=10},
+  {id:'xp500',ic:'⚡',nm:'500 XP',cond:p=>p.xp>=500},
+  {id:'xp2000',ic:'💎',nm:'2000 XP',cond:p=>p.xp>=2000},
+  {id:'conj30',ic:'📝',nm:'30 conjugaisons',cond:p=>(p.conjOk||0)>=30},
+  {id:'homo20',ic:'🔊',nm:'20 homophones',cond:p=>(p.homoOk||0)>=20},
+  {id:'ortho20',ic:'✏️',nm:'20 orthos',cond:p=>(p.orthoOk||0)>=20},
+  {id:'syno20',ic:'🔗',nm:'20 synonymes',cond:p=>(p.synoOk||0)>=20},
+  {id:'revision',ic:'🔁',nm:'Réviseur',cond:p=>(p.revisionDone||0)>=1},
+  {id:'all_types',ic:'🎓',nm:'Touche-à-tout',cond:p=>Object.keys(p.typeStats||{}).length>=8},
+];
+
+
+// ══════════════════════════════════════════════════
+// FRANÇAIS POSÉ — app.js
+// Logique principale : DB, moteur de conjugaison,
+// générateur de questions, interface, IA.
+// NE PAS MODIFIER sauf pour ajuster les règles de jeu.
+// ══════════════════════════════════════════════════
+
+let DB={p:[]};
+const DB_KEY='frDB4';
+function saveDB(){try{localStorage.setItem(DB_KEY,JSON.stringify(DB));}catch(e){}}
+function loadDB(){try{const d=localStorage.getItem(DB_KEY);if(d)DB=JSON.parse(d);}catch(e){}}
+function mkProf(name,av){return{name,av,xp:0,totalQ:0,perfectRounds:0,maxCombo:0,
+  conjOk:0,homoOk:0,orthoOk:0,synoOk:0,revisionDone:0,
+  badges:[],history:[],errors:[],typeStats:{}};}
+function curP(){return DB.p[cur]||null;}
+
+// ══════════════════════════════════════════════════
+// STATE
+let cur=0,curOp='conj_pres',isMix=false,isRev=false;
+let selLvls=['CP'],qCount=5,chronoMode='libre';
+let ctmLeft=0,ctmID=null;
+let qs=[],qi=0,ans=[],combo=0,sessXP=0;
+let blocked=false,triesLeft=2;
+let qStartTime=0,curQ=null;
+const MAX_TRIES=2;
+
+// ══════════════════════════════════════════════════
+// UTILS
+function pick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;}
+function maxLvlI(){return Math.max(...selLvls.map(lvlIdx));}
+function compatVerbs(){const m=maxLvlI();return VERB_LIST.filter(v=>lvlIdx(v[4])<=m);}
+
+// ══════════════════════════════════════════════════
+// CONJUGATION ENGINE
+function conjForm(verb,tense,pi){
+  if(CONJ_IRREG[verb]?.[tense]?.[pi]!==undefined)return CONJ_IRREG[verb][tense][pi];
+  const info=VERB_LIST.find(v=>v[0]===verb);if(!info)return'?';
+  const[inf,gr]=info;
+  if(gr===1){
+    if(tense==='pres'){const s=inf.replace(/er$/,'');const e=['e','es','e','ons','ez','ent'];
+      if(inf.endsWith('ger')&&pi===3)return s+'eons';
+      if(inf.endsWith('cer')&&pi===3)return s.slice(0,-1)+'çons';return s+e[pi];}
+    if(tense==='imp'){const s=inf.replace(/er$/,'');return s+['ais','ais','ait','ions','iez','aient'][pi];}
+    if(tense==='fut')return inf+['ai','as','a','ons','ez','ont'][pi];
+    if(tense==='cond')return inf+['ais','ais','ait','ions','iez','aient'][pi];
+    if(tense==='subj'){const s=inf.replace(/er$/,'');return s+['e','es','e','ions','iez','ent'][pi];}
+  }
+  if(gr===2){const s=inf.replace(/ir$/,'');
+    if(tense==='pres')return s+['is','is','it','issons','issez','issent'][pi];
+    if(tense==='imp')return s+['issais','issais','issait','issions','issiez','issaient'][pi];
+    if(tense==='fut')return inf+['ai','as','a','ons','ez','ont'][pi];
+    if(tense==='cond')return inf+['ais','ais','ait','ions','iez','aient'][pi];
+    if(tense==='subj')return s+['isse','isses','isse','issions','issiez','issent'][pi];
+  }
+  return'?';
+}
+function pcForm(verb,pi){
+  const i=VERB_LIST.find(v=>v[0]===verb);if(!i)return'?';
+  const pp=i[3];const et=['suis','es','est','sommes','êtes','sont'];
+  const av=['ai','as','a','avons','avez','ont'];
+  const auxF=i[2]==='et'?et[pi]:av[pi];
+  let ppF=pp;if(i[2]==='et'&&pi===5)ppF=pp+(pp.endsWith('s')?'':'s');
+  return auxF+' '+ppF;
+}
+function pqpForm(verb,pi){
+  const i=VERB_LIST.find(v=>v[0]===verb);if(!i)return'?';
+  const pp=i[3];const et=['étais','étais','était','étions','étiez','étaient'];
+  const av=['avais','avais','avait','avions','aviez','avaient'];
+  return(i[2]==='et'?et[pi]:av[pi])+' '+pp;
+}
+function elide(subj,form){
+  if(subj==='je'&&/^[aeiouéèêëàâùûôîïh]/i.test(form))return"j'"+form;
+  return subj+' '+form;
+}
+function fullForm(verb,tense,pi){
+  let f;
+  if(tense==='pc')f=pcForm(verb,pi);
+  else if(tense==='pqp')f=pqpForm(verb,pi);
+  else f=conjForm(verb,tense,pi);
+  return elide(SUBJ_S[pi],f);
+}
+
+// ══════════════════════════════════════════════════
+// QUESTION GENERATOR
+// Principe des distracteurs : plausibles, jamais aléatoires.
+// Chaque mauvaise réponse doit être le genre d'erreur
+// qu'un élève pourrait réellement faire.
+// ══════════════════════════════════════════════════
+function genQ(opId){
+  if(opId==='mix'){
+    const m=maxLvlI();
+    const ok=OPS.filter(o=>lvlIdx(o.min)<=m);
+    opId=pick(ok).id;
+  }
+
+  // ── CONJUGAISON ────────────────────────────────
+  // RÈGLE ABSOLUE : toutes les réponses concernent TOUJOURS
+  // le même verbe ET la même personne. Les distracteurs sont
+  // des formes erronées réalistes (mauvais temps, mauvaise
+  // terminaison, faute d'orthographe typique).
+  if(opId.startsWith('conj_')){
+    const tense=opId.replace('conj_','');
+    const verbs=compatVerbs();if(!verbs.length)return null;
+    const v=pick(verbs);const pi=0|Math.random()*6;
+    const inf=v[0];
+    const getF=(vb,t,p)=>{
+      if(t==='pc')return pcForm(vb,p);
+      if(t==='pqp')return pqpForm(vb,p);
+      return conjForm(vb,t,p);
+    };
+    const correct=getF(inf,tense,pi);
+    const wrongs=[];
+    const add=f=>{if(f&&f!=='?'&&f!==correct&&!wrongs.includes(f))wrongs.push(f);};
+
+    // ── 1. Confusion de temps : même verbe, même personne, autre temps
+    //    C'est la confusion la plus fréquente et la plus réaliste.
+    //    "je dansais" / "je danserai" / "j'ai dansé" au lieu de "je danse"
+    const confusable={
+      pres:['imp','fut','cond','subj'],
+      imp:['pres','cond','subj'],
+      fut:['cond','pres','imp'],
+      pc:['pqp','imp','pres'],
+      pqp:['pc','imp','cond'],
+      cond:['fut','imp','pres'],
+      subj:['pres','imp','cond'],
+    };
+    shuffle(confusable[tense]||[]).forEach(t2=>add(getF(inf,t2,pi)));
+
+    // ── 2. Terminaisons fausses mais plausibles : même verbe, même personne,
+    //    même temps mais avec une terminaison erronée typique.
+    //    Ex: "je dansais" → "je dansait", "je dancerais" → "je dancera"
+    const form=correct; // forme correcte comme base
+    // Fautes de terminaison sur la forme correcte
+    const termFautes=[];
+    if(tense==='pres'&&v[1]===1){
+      // Groupe 1 présent : confusions -e/-es/-ent pour je/tu/il
+      if(pi===0)termFautes.push(inf.replace(/er$/,'es'),inf.replace(/er$/,'ait'));
+      if(pi===1)termFautes.push(inf.replace(/er$/,'e'),inf.replace(/er$/,'ait'));
+      if(pi===2)termFautes.push(inf.replace(/er$/,'e'),inf.replace(/er$/,'es'));
+      if(pi===3)termFautes.push(inf.replace(/er$/,'on'),inf.replace(/er$/,'ont'));
+      if(pi===4)termFautes.push(inf.replace(/er$/,'és'),inf.replace(/er$/,'ais'));
+      if(pi===5)termFautes.push(inf.replace(/er$/,'en'),inf.replace(/er$/,'aient'));
+    }
+    if(tense==='imp'){
+      // Confusion imparfait/présent : -ais → -e ou -a
+      const s=form.replace(/ /g,'');
+      if(form.endsWith('ais'))termFautes.push(form.replace(/ais$/,'e'),form.replace(/ais$/,'a'));
+      if(form.endsWith('ait'))termFautes.push(form.replace(/ait$/,'a'),form.replace(/ait$/,'e'));
+      if(form.endsWith('ions'))termFautes.push(form.replace(/ions$/,'ons'),form.replace(/ions$/,'iont'));
+      if(form.endsWith('aient'))termFautes.push(form.replace(/aient$/,'ont'),form.replace(/aient$/,'ent'));
+    }
+    if(tense==='fut'){
+      if(form.endsWith('ai'))termFautes.push(form.replace(/ai$/,'ait'),form.replace(/ai$/,'ais'));
+      if(form.endsWith('ons'))termFautes.push(form.replace(/ons$/,'ont'),form.replace(/ons$/,'ions'));
+      if(form.endsWith('ont'))termFautes.push(form.replace(/ont$/,'aient'),form.replace(/ont$/,'ons'));
+    }
+    if(tense==='cond'){
+      if(form.endsWith('ais'))termFautes.push(form.replace(/ais$/,'a'),form.replace(/ais$/,'e'));
+      if(form.endsWith('ait'))termFautes.push(form.replace(/ait$/,'a'),form.replace(/ait$/,'ais'));
+      if(form.endsWith('aient'))termFautes.push(form.replace(/aient$/,'ont'),form.replace(/aient$/,'ent'));
+    }
+    if(tense==='subj'){
+      if(pi===3)termFautes.push(form.replace(/ions$/,'ons'),form.replace(/ions$/,'iont'));
+      if(pi===4)termFautes.push(form.replace(/iez$/,'ez'),form.replace(/iez$/,'ier'));
+    }
+    termFautes.forEach(f=>add(f));
+
+    // ── 3. Infinitif et participe passé : confusions classiques
+    //    "je danser" / "je dansé" au lieu de "je danse"
+    add(elide(SUBJ_S[pi],inf));                          // infinitif brut
+    add(elide(SUBJ_S[pi],v[3]));                        // participe passé seul
+
+    // ── 4. Passé composé / PQP : pièges spécifiques auxiliaire & accord
+    if(tense==='pc'||tense==='pqp'){
+      const auxPc=['ai','as','a','avons','avez','ont'][pi];
+      const auxEt=['suis','es','est','sommes','êtes','sont'][pi];
+      const aux=v[2]==='et'?auxEt:auxPc;
+      const pp=v[3];
+      // Mauvais auxiliaire
+      const wrongAux=v[2]==='et'?auxPc:auxEt;
+      add(elide(SUBJ_S[pi],wrongAux+' '+pp));
+      // Infinitif à la place du participe
+      add(elide(SUBJ_S[pi],aux+' '+inf));
+      // Participe mal accordé
+      if(!pp.endsWith('s'))add(elide(SUBJ_S[pi],aux+' '+pp+'s'));
+      if(pp.endsWith('é'))add(elide(SUBJ_S[pi],aux+' '+pp.replace(/é$/,'er')));
+    }
+
+    // ── Fallback : formes des autres personnes si vraiment pas assez
+    shuffle([0,1,2,3,4,5]).forEach(p2=>{
+      if(p2!==pi&&wrongs.length<3)add(getF(inf,tense,p2));
+    });
+
+    return{t:'conj',verb:inf,tense,pi,subj:SUBJECTS[pi],correct,
+      choices:shuffle([correct,...wrongs.slice(0,3)]),opId};
+  }
+
+  const m=maxLvlI();
+
+  // ── HOMOPHONES ─────────────────────────────────
+  // Distracteurs = les autres homophones stockés dans l'entrée, c'est tout.
+  if(opId==='homo'){
+    const pool=HOMO.filter(h=>lvlIdx(h[3])<=m);if(!pool.length)return null;
+    const[phrase,correct,wrongs]=pick(pool);
+    return{t:'homo',phrase,correct,choices:shuffle([correct,...wrongs].slice(0,4)),opId};
+  }
+
+  // ── ACCORD D'ADJECTIF ──────────────────────────
+  // Distracteurs = les 3 autres formes du MÊME adjectif (ms/fs/mp/fp).
+  // Ex: correct="grande" → distracteurs: "grand","grands","grandes"
+  // L'élève doit réfléchir au genre et au nombre, pas à quel adjectif choisir.
+  if(opId==='adj_accord'){
+    const ap=ADJ.filter(a=>lvlIdx(a[4])<=m);
+    const np=NOUNS.filter(n=>lvlIdx(n[4])<=m);
+    if(!ap.length||!np.length)return null;
+    const adj=pick(ap);
+    const noun=pick(np);
+    const g=Math.random()<.5?'m':'f';
+    const nb=Math.random()<.5?'s':'p';
+    const ai=(g==='f'?1:0)+(nb==='p'?2:0);
+    const ni=(g==='f'?1:0)+(nb==='p'?2:0);
+    const correct=adj[ai];
+    const nf=noun[ni];
+    // Les 3 autres formes du même adjectif = distracteurs parfaits
+    const wf=[adj[0],adj[1],adj[2],adj[3]].filter(f=>f!==correct);
+    const det=g==='m'?(nb==='s'?'un':'des'):(nb==='s'?'une':'des');
+    return{t:'adj',noun:nf,det,g,nb,adjBase:adj[0],correct,
+      choices:shuffle([correct,...shuffle(wf).slice(0,3)]),opId};
+  }
+
+  // ── ACCORD GROUPE NOMINAL ──────────────────────
+  // Même principe : 4 formes du même adjectif.
+  if(opId==='gn_accord'){
+    const pool=GN.filter(g=>lvlIdx(g[5])<=m);if(!pool.length)return null;
+    const[det,nom,adjMs,genre,nb]=pick(pool);
+    const ae=ADJ.find(a=>a[0]===adjMs)||ADJ[0];
+    const ai=(genre==='f'?1:0)+(nb==='p'?2:0);
+    const correct=ae[ai];
+    const wf=[ae[0],ae[1],ae[2],ae[3]].filter(f=>f!==correct);
+    return{t:'gn',det,nom,genre,nb,adjMs,correct,
+      choices:shuffle([correct,...shuffle(wf).slice(0,3)]),opId};
+  }
+
+  // ── NATURE DES MOTS ────────────────────────────
+  // Distracteurs = catégories grammaticales stockées dans les données.
+  if(opId==='nature'){
+    const pool=NATURE.filter(n=>lvlIdx(n[4])<=m);if(!pool.length)return null;
+    const[phrase,mot,correct,wrongs]=pick(pool);
+    return{t:'nature',phrase,mot,correct,choices:shuffle([correct,...wrongs].slice(0,4)),opId};
+  }
+
+  // ── ORTHOGRAPHE ────────────────────────────────
+  // Distracteurs = les graphies fausses du MÊME mot, stockées dans les données.
+  if(opId==='ortho'){
+    const pool=ORTHO.filter(o=>lvlIdx(o[5])<=m);if(!pool.length)return null;
+    const entry=pick(pool);
+    const correct=entry[0];
+    const wrongs=entry.slice(1,5).filter(f=>f&&f!==correct);
+    return{t:'ortho',correct,choices:shuffle([correct,...wrongs.slice(0,3)]),opId};
+  }
+
+  // ── SYNONYMES ──────────────────────────────────
+  // Distracteurs = les faux synonymes stockés dans l'entrée, c'est tout.
+  // Ils ont été choisis pour être des leurres crédibles (proches sémantiquement).
+  if(opId==='synonyme'){
+    const pool=SYNO.filter(s=>lvlIdx(s[3])<=m);if(!pool.length)return null;
+    const[mot,correct,wrongs]=pick(pool);
+    return{t:'syno',mot,correct,choices:shuffle([correct,...wrongs].slice(0,4)),opId};
+  }
+
+  // ── ANTONYMES ──────────────────────────────────
+  // Même principe : distracteurs stockés dans l'entrée uniquement.
+  if(opId==='antonyme'){
+    const pool=ANTO.filter(a=>lvlIdx(a[3])<=m);if(!pool.length)return null;
+    const[mot,correct,wrongs]=pick(pool);
+    return{t:'anto',mot,correct,choices:shuffle([correct,...wrongs].slice(0,4)),opId};
+  }
+
+  // ── DICTÉE ─────────────────────────────────────
+  if(opId==='dictee'){
+    const pool=DICTEE_DATA.filter(d=>lvlIdx(d[1])<=maxLvlI());
+    if(!pool.length)return null;
+    const[phrase]=pick(pool);
+    return{t:'dictee',phrase,opId};
+  }
+
+  // ── CORRIGER LA PHRASE ─────────────────────────
+  // Distracteurs = variantes morphologiques du mot à corriger,
+  // stockées directement dans les données. JAMAIS des mots d'autres phrases.
+  if(opId==='phrase_corr'){
+    const pool=PHRASE_CORR.filter(d=>lvlIdx(d[5])<=maxLvlI());
+    if(!pool.length)return null;
+    const[phrase,erreur,correction,distractors,explication]=pick(pool);
+    return{t:'phrase_corr',phrase,erreur,correction,explication,
+      choices:shuffle([correction,...distractors.slice(0,3)]),opId};
+  }
+
+  // ── GENRE DES NOMS ─────────────────────────────
+  if(opId==='genre'){
+    const pool=GENRE_DATA.filter(d=>lvlIdx(d[3])<=maxLvlI());
+    if(!pool.length)return null;
+    const[mot,correct,wrongs]=pick(pool);
+    return{t:'genre',mot,correct,choices:shuffle([correct,...wrongs]),opId};
+  }
+
+  return null;
+}
+
+// ══════════════════════════════════════════════════
+// RENDER HOME
+function renderHome(){renderProfiles();renderLevels();renderOps();}
+
+function renderProfiles(){
+  const w=document.getElementById('profiles-wrap');w.innerHTML='';
+  if(!DB.p.length){
+    // Pas encore de profil : afficher un CTA centré
+    const msg=document.createElement('div');
+    msg.style.cssText='flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:18px 16px;';
+    msg.innerHTML='<div style="font-size:2.2rem">👤</div>'+
+      '<div style="font-size:.85rem;font-weight:700;color:var(--txt)">Bienvenue !</div>'+
+      '<div style="font-size:.72rem;color:var(--txt2);text-align:center">Crée un profil pour commencer<br>et suivre ta progression.</div>'+
+      '<button class="btn-go" style="margin-top:6px;padding:10px 22px;font-size:.82rem" onclick="openProfModal()">➕ Créer un profil</button>';
+    w.appendChild(msg);
+    renderRevBanner();return;
+  }
+  DB.p.forEach((p,i)=>{
+    const lv=getXPLevel(p.xp);
+    const errN=(p.errors||[]).length;
+    const d=document.createElement('div');
+    d.className='prof-card'+(i===cur?' active':'');
+    d.innerHTML=`<div class="av">${p.av}</div>`+
+      `<div class="pname">${p.name}</div>`+
+      `<div class="plvl">${lv.ic} ${lv.lbl}</div>`+
+      (errN?`<div class="perr">⚠ ${errN} erreur${errN>1?'s':''}</div>`:'');
+    d.onclick=()=>{cur=i;renderProfiles();renderRevBanner();};
+    w.appendChild(d);
+  });
+  const add=document.createElement('div');add.className='prof-card add-prof';
+  add.innerHTML='<div class="av">➕</div><div class="pname">Nouveau</div>';
+  add.onclick=openProfModal;w.appendChild(add);
+  renderRevBanner();
+}
+function renderRevBanner(){
+  const p=curP();const ban=document.getElementById('rev-banner');
+  if(!p||!p.errors||!p.errors.length){ban.classList.remove('show');return;}
+  const n=p.errors.length;
+  document.getElementById('rev-title').textContent=`Réviser ${n} erreur${n>1?'s':''}`;
+  document.getElementById('rev-sub').textContent='Tes points faibles à retravailler';
+  ban.classList.add('show');
+}
+function renderLevels(){
+  const sc=document.getElementById('lvl-row');sc.innerHTML='';
+  LEVELS.forEach(l=>{
+    const b=document.createElement('button');
+    b.className='lpill'+(selLvls.includes(l)?selLvls.length>1?' on range':' on':'');
+    b.id='lp-'+l;b.textContent=l;b.onclick=()=>setLvl(l);sc.appendChild(b);
+  });
+}
+function setLvl(lv){
+  const anchor=selLvls[0];
+  if(!anchor||anchor===lv){selLvls=[lv];}
+  else{const a=lvlIdx(anchor),b=lvlIdx(lv);selLvls=LEVELS.slice(Math.min(a,b),Math.max(a,b)+1);}
+  syncLvlUI();renderOps();
+}
+function syncLvlUI(){
+  LEVELS.forEach(l=>{const b=document.getElementById('lp-'+l);if(!b)return;
+    b.className='lpill'+(selLvls.includes(l)?selLvls.length>1?' on range':' on':'');});
+}
+function rndLvl(){selLvls=[LEVELS[0|Math.random()*LEVELS.length]];syncLvlUI();renderOps();}
+function allLvls(){selLvls=[...LEVELS];syncLvlUI();renderOps();}
+function renderOps(){
+  const g=document.getElementById('ex-grid');g.innerHTML='';
+  const mix=document.createElement('div');
+  mix.className='ex-card ex-mix'+(isMix?' selected':'');
+  mix.innerHTML='<div class="eicon">🎲</div><div class="elabel">Méli-mélo</div><div class="esub">Tout mélangé !</div>';
+  mix.onclick=()=>{isMix=true;startGame('mix');};g.appendChild(mix);
+  OPS.forEach(op=>{
+    const avail=maxLvlI()>=lvlIdx(op.min);
+    const d=document.createElement('div');
+    d.className='ex-card'+(!avail?' off':'')+((!isMix&&curOp===op.id)?' selected':'');
+    d.innerHTML=`<div class="eicon">${op.ic}</div><div class="elabel">${op.lbl}</div>`+
+      `<div class="esub">${op.sub}</div><div class="ebadge">${op.min}+</div>`;
+    if(avail)d.onclick=()=>{isMix=false;curOp=op.id;startGame(op.id);};
+    g.appendChild(d);
+  });
+}
+function setOpt(type,val,btn){
+  if(type==='q')qCount=val;
+  if(type==='c')chronoMode=val;
+  btn.parentElement.querySelectorAll('.opb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ══════════════════════════════════════════════════
+// PROFILE MODAL
+let selAv=AVATS[0];
+function openProfModal(){
+  const g=document.getElementById('av-grid');g.innerHTML='';
+  AVATS.forEach(a=>{
+    const b=document.createElement('button');b.className='avb'+(a===selAv?' sel':'');b.textContent=a;
+    b.onclick=()=>{selAv=a;g.querySelectorAll('.avb').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');};
+    g.appendChild(b);
+  });
+  document.getElementById('pname-inp').value='';
+  document.getElementById('prof-modal').classList.add('open');
+  setTimeout(()=>document.getElementById('pname-inp').focus(),120);
+}
+function closeProfModal(){document.getElementById('prof-modal').classList.remove('open');}
+function saveProfModal(){
+  const n=document.getElementById('pname-inp').value.trim();if(!n)return;
+  DB.p.push(mkProf(n,selAv));cur=DB.p.length-1;saveDB();closeProfModal();renderProfiles();
+}
+
+// ══════════════════════════════════════════════════
+// SETTINGS
+function openSettings(){
+  const k=localStorage.getItem('frAIKey')||'';
+  document.getElementById('api-key-inp').value=k?'••••••••':'';
+  // del prof list
+  const dl=document.getElementById('del-prof-list');dl.innerHTML='';
+  DB.p.forEach((p,i)=>{
+    const b=document.createElement('button');
+    b.style.cssText='background:rgba(244,63,94,.1);border:1px solid rgba(244,63,94,.25);border-radius:8px;padding:5px 10px;font-size:.72rem;font-weight:700;color:#f43f5e;cursor:pointer;font-family:inherit';
+    b.textContent=p.av+' '+p.name+' ×';
+    b.onclick=()=>{if(confirm('Supprimer '+p.name+' ?')){DB.p.splice(i,1);if(cur>=DB.p.length)cur=Math.max(0,DB.p.length-1);saveDB();openSettings();renderProfiles();}};
+    dl.appendChild(b);
+  });
+  document.getElementById('settings-modal').classList.add('open');
+}
+function closeSettings(){document.getElementById('settings-modal').classList.remove('open');}
+function saveKey(){
+  const k=document.getElementById('api-key-inp').value.trim();
+  if(k&&k!=='••••••••')localStorage.setItem('frAIKey',k);
+  toast('✅ Clé sauvegardée');closeSettings();
+}
+function nukeAll(){
+  if(confirm('Effacer TOUTES les données ?')){
+    localStorage.clear();DB={p:[]};
+    DB.p.push(mkProf('Moi','🧒'));saveDB();
+    renderHome();closeSettings();toast('✅ Réinitialisé');
+  }
+}
+
+// ══════════════════════════════════════════════════
+// TOAST
+let toastT=null;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.opacity=1;
+  clearTimeout(toastT);toastT=setTimeout(()=>t.style.opacity=0,2400);
+}
+
+// ══════════════════════════════════════════════════
+// SCREEN NAVIGATION
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ══════════════════════════════════════════════════
+// GAME
+function startGame(opId){
+  if(!DB.p.length){toast('Crée un profil d\'abord !');return;}
+  curOp=opId;isRev=false;qs=[];qi=0;ans=[];combo=0;sessXP=0;blocked=false;
+  if(qCount===0){const q=genQ(opId);if(!q){toast('Aucune question disponible');return;}qs=[q];}
+  else{for(let i=0;i<qCount;i++){const q=genQ(opId);if(q)qs.push(q);}if(!qs.length){toast('Niveau indisponible pour cet exercice');return;}}
+  document.getElementById('stop-btn').style.display=qCount===0?'block':'none';
+  showScreen('game');showQ();
+}
+function startRevision(){
+  const p=curP();
+  if(!p||!p.errors||!p.errors.length){toast('Aucune erreur à réviser !');return;}
+  isRev=true;curOp='mix';
+  qs=shuffle([...p.errors]).slice(0,Math.min(10,p.errors.length));
+  qi=0;ans=[];combo=0;sessXP=0;blocked=false;
+  document.getElementById('stop-btn').style.display='block';
+  showScreen('game');showQ();
+}
+
+function showQ(){
+  // Infinite mode: generate next question on the fly
+  if(qCount===0&&!isRev&&qi>=qs.length){
+    const q=genQ(curOp);if(q)qs.push(q);else{showResult();return;}
+  }
+  if(qi>=qs.length){showResult();return;}
+  const q=qs[qi];curQ=q;triesLeft=MAX_TRIES;blocked=false;qStartTime=Date.now();
+
+  const lbl=document.getElementById('g-label');
+  if(isRev){lbl.textContent='🔁 Révision des erreurs';}
+  else{
+    const op=OPS.find(o=>o.id===q.opId)||{lbl:q.opId};
+    const ls=selLvls.length===1?selLvls[0]:selLvls[0]+'→'+selLvls[selLvls.length-1];
+    lbl.textContent=(isMix?'🎲 ':'')+op.lbl+' · '+ls;
+  }
+  document.getElementById('xp-pill').textContent='+'+sessXP+' XP';
+  const cp=document.getElementById('combo-pill');
+  if(combo>=2){cp.style.display='block';cp.textContent='🔥 ×'+combo;}else cp.style.display='none';
+
+  renderDots();buildCard(q);
+  if(chronoMode!=='libre')startCTM(parseInt(chronoMode));
+}
+
+function renderDots(){
+  const row=document.getElementById('dots');const txt=document.getElementById('prog-txt');row.innerHTML='';
+  const total=isRev?qs.length:(qCount===0?null:qs.length);
+  if(!total){
+    ans.slice(-8).forEach(a=>{const d=document.createElement('div');d.className='dot '+(a?'ok':'ko');row.appendChild(d);});
+    row.appendChild(Object.assign(document.createElement('div'),{className:'dot cur'}));
+    txt.textContent=qi+' Q';
+  }else{
+    qs.forEach((_,i)=>{const d=document.createElement('div');
+      d.className='dot '+(i<ans.length?(ans[i]?'ok':'ko'):(i===qi?'cur':''));row.appendChild(d);});
+    txt.textContent=(qi+1)+'/'+qs.length;
+  }
+}
+
+function buildCard(q){
+  const type=document.getElementById('q-type');
+  const main=document.getElementById('q-main');
+  const hint=document.getElementById('q-hint');
+  document.getElementById('ch-grid').innerHTML='';
+  document.getElementById('ch-grid').style.display='';
+  document.getElementById('fb').style.display='none';
+  hideDicteeZone();
+  document.getElementById('ch-grid').style.display='';
+  const card=document.getElementById('q-card');
+  card.classList.remove('shake-card');
+  card.style.animation='none';void card.offsetWidth;card.style.animation='';
+
+  const lbl={
+    conj:'Conjugaison — ',adj:'Accord de l\'adjectif',
+    gn:'Accord du GN',homo:'Homophones',nature:'Nature des mots',
+    ortho:'Orthographe',syno:'Synonymes',anto:'Antonymes'
+  };
+
+  if(q.t==='conj'){
+    type.textContent=lbl.conj+TENSE_LBL[q.tense];
+    main.innerHTML=`Conjugue <em>${q.verb}</em> avec <strong>${q.subj}</strong>`;
+    hint.textContent='';
+  }else if(q.t==='homo'){
+    type.textContent=lbl.homo;
+    main.innerHTML=q.phrase.replace('___','<span class="q-blank">___</span>');
+    hint.textContent='Choisis le bon mot :';
+  }else if(q.t==='adj'){
+    type.textContent=lbl.adj;
+    main.innerHTML=`Accorde <em>${q.adjBase}</em> avec <strong>${q.det} ${q.noun}</strong>`;
+    hint.textContent='Genre : '+(q.g==='m'?'masculin':'féminin')+' · Nombre : '+(q.nb==='s'?'singulier':'pluriel');
+  }else if(q.t==='gn'){
+    type.textContent=lbl.gn;
+    main.innerHTML=`<strong>${q.det} ${q.nom}</strong> <em>___</em>`;
+    hint.textContent='Genre : '+(q.genre==='m'?'masculin':'féminin')+' · Nombre : '+(q.nb==='s'?'singulier':'pluriel');
+  }else if(q.t==='nature'){
+    type.textContent=lbl.nature;
+    main.innerHTML=`Quelle est la nature de <em>${q.mot}</em> ?`;
+    hint.textContent=q.phrase;
+  }else if(q.t==='ortho'){
+    type.textContent=lbl.ortho;
+    main.innerHTML='Quelle est la <em>bonne orthographe</em> ?';
+    hint.textContent='';
+  }else if(q.t==='syno'){
+    type.textContent=lbl.syno;
+    main.innerHTML=`Quel mot a le même sens que <em>${q.mot}</em> ?`;
+    hint.textContent='';
+  }else if(q.t==='anto'){
+    type.textContent=lbl.anto;
+    main.innerHTML=`Quel est le contraire de <em>${q.mot}</em> ?`;
+    hint.textContent='';
+  }else if(q.t==='dictee'){
+    type.textContent='🎙 Dictée';
+    main.innerHTML='Écoute la phrase et écris-la.';
+    hint.textContent='Appuie sur les lettres accentuées si besoin.';
+    document.getElementById('ch-grid').style.display='none';
+    showDicteeZone(q.phrase);
+    return; // no buildChoices
+  }else if(q.t==='phrase_corr'){
+    type.textContent='🔍 Corriger la phrase';
+    main.innerHTML='Quelle est la version <em>correcte</em> ?';
+    const errHl=q.phrase.replace(q.erreur,
+      '<u style="color:var(--red);font-weight:900">'+q.erreur+'</u>');
+    hint.innerHTML='<span style="color:var(--txt3)">'+errHl+'</span>';
+    document.getElementById('ch-grid').style.display='';
+  }else if(q.t==='genre'){
+    type.textContent='⚖️ Genre des noms';
+    main.innerHTML=`Quel est le genre du nom <em>${q.mot}</em> ?`;
+    hint.innerHTML='<span style="color:var(--txt2)"><em>le/un</em> → masculin · <em>la/une</em> → féminin</span>';
+    document.getElementById('ch-grid').style.display='';
+  }
+  if(q.t==='phrase_corr') buildChoices(q.choices, q.correction);
+  else buildChoices(q.choices, q.correct);
+}
+
+function buildChoices(choices,correct){
+  const g=document.getElementById('ch-grid');g.innerHTML='';
+  choices.forEach(c=>{
+    const b=document.createElement('button');b.className='ch';b.textContent=c;
+    b.onclick=()=>!blocked&&checkChoice(b,c,correct);g.appendChild(b);
+  });
+}
+
+function checkChoice(btn,val,correct){
+  if(blocked)return;
+  if(val===correct){
+    blocked=true;stopCTM();btn.classList.add('correct');
+    document.querySelectorAll('.ch').forEach(b=>{if(b!==btn)b.classList.add('dim');});
+    finishAns(true);
+  }else{
+    triesLeft--;btn.classList.add('wrong');btn.disabled=true;
+    if(triesLeft<=0){
+      blocked=true;stopCTM();
+      document.querySelectorAll('.ch').forEach(b=>{
+        if(b.textContent===correct)b.classList.add('correct');
+        else if(!b.classList.contains('wrong'))b.classList.add('dim');
+      });
+      finishAns(false);
+    }else{
+      document.getElementById('q-card').classList.add('shake-card');
+      showFb(false,'❌ Encore '+triesLeft+' essai !',false);
+    }
+  }
+}
+
+function finishAns(ok){
+  const elapsed=(Date.now()-qStartTime)/1000;
+  ans.push(ok);
+  const q=qs[qi];let pts=0;
+  if(ok){
+    combo++;
+    pts=Math.round(10*(triesLeft===MAX_TRIES?1:.5)*(combo>=3?2:combo>=2?1.5:1));
+    if(elapsed<5&&triesLeft===MAX_TRIES)pts=Math.round(pts*1.2); // speed bonus
+    sessXP+=pts;showFb(true,getExpl(q,true),true);
+  }else{
+    combo=0;showFb(false,getExpl(q,false),true);storeErr(q);
+  }
+  document.getElementById('xp-pill').textContent='+'+sessXP+' XP';
+  if(ok&&pts>0)flyPts('+'+pts);
+  // In revision, remove correctly answered errors
+  if(ok&&isRev){
+    const p=curP();
+    if(p){const k=JSON.stringify({t:q.t,verb:q.verb,tense:q.tense,pi:q.pi,phrase:q.phrase,mot:q.mot,correct:q.correct});
+      p.errors=p.errors.filter(e=>JSON.stringify({t:e.t,verb:e.verb,tense:e.tense,pi:e.pi,phrase:e.phrase,mot:e.mot,correct:e.correct})!==k);
+      saveDB();}
+  }
+  setTimeout(()=>{qi++;showQ();},ok?1500:4000);
+}
+
+function storeErr(q){
+  const p=curP();if(!p)return;
+  if(!p.errors)p.errors=[];
+  const copy={...q};delete copy.choices; // recompute choices fresh next time
+  copy.choices=q.choices; // keep choices for revision
+  // dedup by type + key fields
+  const key=q.t+(q.verb||'')+(q.tense||'')+(q.pi||0)+(q.phrase||'')+(q.mot||'')+(q.correct||'');
+  p.errors=p.errors.filter(e=>{
+    const ek=e.t+(e.verb||'')+(e.tense||'')+(e.pi||0)+(e.phrase||'')+(e.mot||'')+(e.correct||'');
+    return ek!==key;
+  });
+  p.errors.unshift({...q});
+  if(p.errors.length>30)p.errors.length=30;
+  saveDB();
+}
+
+function getExpl(q,ok){
+  const T=(ok?'✅ ':'');
+  if(q.t==='conj'){const f=fullForm(q.verb,q.tense,q.pi);return ok?`✅ ${f} — ${TENSE_LBL[q.tense]}`:`Réponse : <strong>${f}</strong>`;}
+  if(q.t==='homo')return ok?`✅ "${q.correct}"`:`Bonne réponse : <strong>${q.correct}</strong>`;
+  if(q.t==='adj')return ok?`✅ "${q.correct}" — accord correct`:`Accord correct : <strong>${q.correct}</strong>`;
+  if(q.t==='gn')return ok?`✅ "${q.correct}" — GN accordé`:`Forme correcte : <strong>${q.correct}</strong>`;
+  if(q.t==='nature')return ok?`✅ "${q.mot}" → ${q.correct}`:`"${q.mot}" est un(e) <strong>${q.correct}</strong>`;
+  if(q.t==='ortho')return ok?`✅ "${q.correct}"`:`Bonne orthographe : <strong>${q.correct}</strong>`;
+  if(q.t==='syno')return ok?`✅ Synonyme de "${q.mot}"`:`Synonyme de "${q.mot}" : <strong>${q.correct}</strong>`;
+  if(q.t==='phrase_corr')return ok?`✅ "${q.correction}" — bonne correction !`:`Correction : <strong>${q.correction}</strong> — ${q.explication}`;
+  if(q.t==='genre')return ok?`✅ "${q.mot}" est bien ${q.correct}`:`"${q.mot}" est <strong>${q.correct}</strong>`;
+  if(q.t==='anto')return ok?`✅ Contraire de "${q.mot}"`:`Contraire de "${q.mot}" : <strong>${q.correct}</strong>`;
+  if(q.t==='dictee')return ok?'✅ Parfait !':'Regarde les erreurs en rouge.';
+  return ok?'✅ Bravo !':'Essaie encore.';
+}
+
+function showFb(ok,msg,persist){
+  const fb=document.getElementById('fb');
+  fb.className='fb '+(ok?'ok':'ko');
+  const aiKey=localStorage.getItem('frAIKey');
+  const aiHtml=!ok?`<div class="fb-row2"><span class="fb-note">Comprendre pourquoi</span>`+
+    `<button class="ai-btn" onclick="askAI()">💡 Expliquer</button></div>`:'';
+  fb.innerHTML=`<div>${msg}</div>${aiHtml}`;
+  fb.style.display='block';
+  if(!persist)setTimeout(()=>fb.style.display='none',1500);
+}
+
+function flyPts(txt){
+  const d=document.createElement('div');d.className='pts-fly';d.textContent=txt;
+  d.style.cssText='left:44%;top:40%;position:fixed';
+  document.body.appendChild(d);setTimeout(()=>d.remove(),950);
+}
+
+function startCTM(sec){
+  ctmLeft=sec;
+  const bar=document.getElementById('ctm-bar');
+  const row=document.getElementById('ctm-row');
+  bar.style.display='block';bar.style.transition='none';bar.style.width='100%';
+  row.style.display='flex';
+  document.getElementById('ctm-n').textContent=ctmLeft;
+  setTimeout(()=>{bar.style.transition='width 1s linear';bar.style.width=((ctmLeft-1)/sec*100)+'%';},50);
+  ctmID=setInterval(()=>{
+    ctmLeft--;
+    document.getElementById('ctm-n').textContent=ctmLeft;
+    bar.style.width=(ctmLeft/sec*100)+'%';
+    if(ctmLeft<=0){stopCTM();ctmTimeout();}
+  },1000);
+}
+function stopCTM(){
+  clearInterval(ctmID);ctmID=null;
+  document.getElementById('ctm-bar').style.display='none';
+  document.getElementById('ctm-row').style.display='none';
+}
+function ctmTimeout(){
+  if(blocked)return;blocked=true;
+  document.querySelectorAll('.ch').forEach(b=>{
+    if(b.textContent===qs[qi]?.correct)b.classList.add('correct');
+    else b.classList.add('dim');b.disabled=true;
+  });
+  finishAns(false);toast('⏱ Temps écoulé !');
+}
+function stopInfini(){showResult();}
+
+// ══════════════════════════════════════════════════
+// RESULT
+function showResult(){
+  stopCTM();
+  const total=ans.length,okN=ans.filter(Boolean).length;
+  const pct=total?Math.round(okN/total*100):0;
+  document.getElementById('stars').textContent=pct>=90?'⭐⭐⭐':pct>=70?'⭐⭐':pct>=50?'⭐':'';
+  document.getElementById('score-num').textContent=okN+'/'+total;
+  document.getElementById('score-sub').textContent=pct+'% · +'+sessXP+' XP';
+  const tags=document.getElementById('res-tags');tags.innerHTML='';
+  const op=OPS.find(o=>o.id===curOp)||{lbl:isRev?'Révision':'?'};
+  const ls=isRev?'Révision':selLvls.length>3?selLvls[0]+'→'+selLvls[selLvls.length-1]:selLvls.join(', ');
+  [isRev?'🔁 Révision':isMix?'🎲 Méli-mélo':op.lbl,ls].forEach(t=>{
+    const s=document.createElement('span');s.className='rtag';s.textContent=t;tags.appendChild(s);
+  });
+
+  const p=curP();
+  if(p){
+    p.xp+=sessXP;p.totalQ+=total;
+    if(pct===100&&total>=5)p.perfectRounds++;
+    p.maxCombo=Math.max(p.maxCombo,combo);
+    if(!p.typeStats)p.typeStats={};
+    qs.forEach((q,i)=>{
+      if(i>=ans.length)return;
+      const t=q.t;if(!p.typeStats[t])p.typeStats[t]={ok:0,tot:0};
+      p.typeStats[t].tot++;if(ans[i])p.typeStats[t].ok++;
+      if(ans[i]){
+        if(q.t==='conj')p.conjOk++;
+        if(q.t==='homo')p.homoOk++;
+        if(q.t==='ortho')p.orthoOk++;
+        if(q.t==='syno'||q.t==='anto')p.synoOk++;
+      }
+    });
+    if(isRev&&okN>0)p.revisionDone=(p.revisionDone||0)+1;
+    const opKey=isRev?'révision':curOp;
+    p.history.unshift({date:Date.now(),op:opKey,ok:okN,total,pts:sessXP});
+    if(p.history.length>50)p.history.length=50;
+    const newBdg=[];
+    BADGES.forEach(b=>{if(!p.badges.includes(b.id)&&b.cond(p)){p.badges.push(b.id);newBdg.push(b);}});
+    saveDB();newBdg.forEach((b,i)=>setTimeout(()=>badgePopup(b),600+i*2000));
+  }
+  if(pct>=80)confetti();
+  buildCorr();buildStats();buildLB();buildBdg();
+  // reset tabs
+  document.querySelectorAll('.tab').forEach((t,i)=>{t.classList.toggle('on',i===0);});
+  document.querySelectorAll('.pane').forEach((p,i)=>{p.classList.toggle('on',i===0);});
+  showScreen('result');
+}
+
+function buildCorr(){
+  const pane=document.getElementById('pane-corr');pane.innerHTML='';
+  qs.forEach((q,i)=>{
+    if(i>=ans.length)return;
+    const ok=ans[i];let qa='',qb='';
+    if(q.t==='conj'){qa=`${q.verb} (${SUBJECTS[q.pi]}, ${TENSE_LBL[q.tense]})`;qb=fullForm(q.verb,q.tense,q.pi);}
+    else if(q.t==='homo'){qa=q.phrase;qb=q.correct;}
+    else if(q.t==='adj'){qa=`${q.det} ${q.noun} + ${q.adjBase}`;qb=q.correct;}
+    else if(q.t==='gn'){qa=`${q.det} ${q.nom} ___`;qb=q.correct;}
+    else if(q.t==='nature'){qa=q.phrase;qb=q.correct;}
+    else if(q.t==='ortho'){qa='Orthographe';qb=q.correct;}
+    else if(q.t==='syno'){qa=`Synonyme de "${q.mot}"`;qb=q.correct;}
+    else if(q.t==='anto'){qa=`Contraire de "${q.mot}"`;qb=q.correct;}
+    else if(q.t==='dictee'){qa='Dictée';qb=q.phrase;}
+    else if(q.t==='phrase_corr'){qa=q.phrase;qb=q.correction;}
+    else if(q.t==='genre'){qa=`Genre de "${q.mot}"`;qb=q.correct;}
+    const d=document.createElement('div');d.className='corr-item';
+    const aiBtn=!ok?`<button class="ci-why" onclick="askAIForQ(${i})">💡 Pourquoi ?</button>`:'';
+    d.innerHTML=`<div class="ci-icon">${ok?'✅':'❌'}</div>`+
+      `<div class="ci-body"><div class="ci-q">${qa}</div>`+
+      `<div class="ci-a">→ <span>${qb}</span></div>${aiBtn}</div>`;
+    pane.appendChild(d);
+  });
+}
+
+const TYPE_LBL={dictee:'Dictée',phrase_corr:'Correction',genre:'Genre',conj:'Conjugaison',adj:'Accord adj.',gn:'Accord GN',homo:'Homophones',nature:'Nature',ortho:'Orthographe',syno:'Synonymes',anto:'Antonymes'};
+function buildStats(){
+  const pane=document.getElementById('pane-stats');pane.innerHTML='';
+  const p=curP();if(!p)return;
+  const total=ans.length,okN=ans.filter(Boolean).length;
+  // Cards
+  const row=document.createElement('div');row.className='stat-cards';
+  [['🎯',okN+'/'+total,'Score session'],
+   ['🔥',combo>0?combo+'× combo':'—','Combo max'],
+   ['⭐',p.xp+' XP',getXPLevel(p.xp).lbl]].forEach(([ic,v,l])=>{
+    const c=document.createElement('div');c.className='scard';
+    c.innerHTML=`<div class="scard-v">${ic} ${v}</div><div class="scard-l">${l}</div>`;
+    row.appendChild(c);
+  });
+  pane.appendChild(row);
+  // Bars
+  if(p.typeStats&&Object.keys(p.typeStats).length){
+    const sec=document.createElement('div');
+    sec.innerHTML='<div class="section-h">Précision par type</div>';
+    Object.entries(p.typeStats)
+      .sort((a,b)=>(b[1].ok/b[1].tot)-(a[1].ok/a[1].tot))
+      .slice(0,6).forEach(([t,s])=>{
+        const pct2=Math.round(s.ok/s.tot*100);
+        const r=document.createElement('div');r.className='bar-row';
+        r.innerHTML=`<div class="bar-lbl">${TYPE_LBL[t]||t}</div>`+
+          `<div class="bar-track"><div class="bar-fill" data-p="${pct2}"></div></div>`+
+          `<div class="bar-pct">${pct2}%</div>`;
+        sec.appendChild(r);
+      });
+    pane.appendChild(sec);
+    setTimeout(()=>pane.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.p+'%'),80);
+  }
+  // History
+  if(p.history&&p.history.length){
+    const sec=document.createElement('div');
+    sec.innerHTML='<div class="section-h">Historique récent</div>';
+    p.history.slice(0,7).forEach(h=>{
+      const d=new Date(h.date);
+      const ds=d.getDate()+'/'+(d.getMonth()+1);
+      const op=OPS.find(o=>o.id===h.op)||{lbl:h.op==='révision'?'🔁 Révision':h.op||'?'};
+      const pct2=h.total?Math.round(h.ok/h.total*100):0;
+      const r=document.createElement('div');r.className='hist-item';
+      r.innerHTML=`<span class="hi-date">${ds}</span><span class="hi-op">${op.lbl||h.op}</span><span class="hi-score">${h.ok}/${h.total} (${pct2}%)</span>`;
+      sec.appendChild(r);
+    });
+    pane.appendChild(sec);
+  }
+}
+
+function buildLB(){
+  const pane=document.getElementById('pane-rank');pane.innerHTML='';
+  [...DB.p].map((p,i)=>({...p,idx:i})).sort((a,b)=>b.xp-a.xp).forEach((p,r)=>{
+    const d=document.createElement('div');d.className='lb-row'+(p.idx===cur?' me':'');
+    const medal=r===0?'🥇':r===1?'🥈':r===2?'🥉':(r+1);
+    d.innerHTML=`<div class="lb-rank">${medal}</div><div class="lb-av">${p.av}</div>`+
+      `<div class="lb-name">${p.name}</div><div class="lb-xp">${p.xp} XP</div>`;
+    pane.appendChild(d);
+  });
+}
+
+function buildBdg(){
+  const pane=document.getElementById('pane-bdg');pane.innerHTML='';
+  const p=curP();if(!p)return;
+  const g=document.createElement('div');g.className='bdg-grid';
+  BADGES.forEach(b=>{
+    const e=p.badges.includes(b.id);
+    const c=document.createElement('div');c.className='bdg'+(e?' earned':'');
+    c.innerHTML=`<span class="bi">${b.ic}</span><div class="bn">${b.nm}</div>`;
+    g.appendChild(c);
+  });
+  pane.appendChild(g);
+}
+
+function badgePopup(b){
+  const d=document.createElement('div');d.className='badge-pop';
+  d.innerHTML=`<div class="bp-icon">${b.ic}</div><div><div class="bp-top">🎉 Nouveau badge !</div><div class="bp-name">${b.nm}</div></div>`;
+  document.body.appendChild(d);setTimeout(()=>d.remove(),3200);
+}
+
+function switchTab(id,btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  btn.classList.add('on');document.getElementById('pane-'+id).classList.add('on');
+  if(id==='stats')setTimeout(()=>{document.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.p+'%');},60);
+}
+
+function confetti(){
+  const c=document.getElementById('confetti-c');c.width=c.offsetWidth;c.height=c.offsetHeight;
+  const cols=['#00c9a7','#818cf8','#f59e0b','#fbbf24','#f43f5e'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');el.className='cf';
+    el.style.cssText=`left:${Math.random()*100}%;background:${cols[i%cols.length]};`+
+      `width:${5+Math.random()*7}px;height:${5+Math.random()*7}px;`+
+      `animation-delay:${Math.random()*.9}s;animation-duration:${1.5+Math.random()*.8}s;`+
+      `border-radius:${Math.random()<.5?'50%':'2px'}`;
+    c.appendChild(el);
+  }
+  setTimeout(()=>c.innerHTML='',3500);
+}
+
+function replayGame(){
+  showScreen('home');
+  if(isRev)startRevision();else startGame(curOp);
+}
+function goHome(){
+  stopCTM();isRev=false;renderHome();showScreen('home');
+}
+
+
+// ══════════════════════════════════════════════════
+// DICTÉE ENGINE
+const ACCENTS_BAR=['à','â','é','è','ê','ë','î','ï','ô','ù','û','ü','ç','œ','æ'];
+let dicteePhrase='';
+let synthVoice=null;
+function loadVoice(){
+  const voices=speechSynthesis.getVoices();
+  synthVoice=voices.find(v=>v.lang.startsWith('fr'))||voices[0]||null;
+}
+if(typeof speechSynthesis!=='undefined'){
+  if(speechSynthesis.onvoiceschanged!==undefined)speechSynthesis.onvoiceschanged=loadVoice;
+  setTimeout(loadVoice,300);
+}
+
+function showDicteeZone(phrase){
+  dicteePhrase=phrase;
+  const zone=document.getElementById('dictee-zone');
+  zone.classList.add('show');
+  const inp=document.getElementById('dictee-input');
+  inp.value='';inp.disabled=false;
+  // Remove any previous diff
+  zone.querySelectorAll('.diff-wrap,.diff-corr').forEach(el=>el.remove());
+  document.getElementById('btn-listen').textContent='🔊 Écouter la phrase';
+  document.getElementById('btn-listen').classList.remove('playing');
+  // Build accent bar
+  const bar=document.getElementById('accents-bar');bar.innerHTML='';
+  ACCENTS_BAR.forEach(ch=>{
+    const b=document.createElement('button');b.className='acc-key';b.textContent=ch;
+    b.onclick=()=>insertAccent(ch);bar.appendChild(b);
+  });
+  // Auto-speak
+  setTimeout(()=>speakDictee(),400);
+}
+
+function hideDicteeZone(){
+  if(typeof speechSynthesis!=='undefined')speechSynthesis.cancel();
+  document.getElementById('dictee-zone').classList.remove('show');
+}
+
+function insertAccent(ch){
+  const inp=document.getElementById('dictee-input');
+  const s=inp.selectionStart,e=inp.selectionEnd;
+  inp.value=inp.value.slice(0,s)+ch+inp.value.slice(e);
+  inp.selectionStart=inp.selectionEnd=s+ch.length;
+  inp.focus();
+}
+
+function speakDictee(){
+  if(!dicteePhrase||typeof speechSynthesis==='undefined'){toast('🔇 Synthèse vocale non disponible');return;}
+  speechSynthesis.cancel();
+  const utt=new SpeechSynthesisUtterance(dicteePhrase);
+  utt.lang='fr-FR';utt.rate=0.80;utt.pitch=1;
+  if(synthVoice)utt.voice=synthVoice;
+  const btn=document.getElementById('btn-listen');
+  btn.classList.add('playing');btn.textContent='🔊 En cours…';
+  utt.onend=utt.onerror=()=>{btn.classList.remove('playing');btn.textContent='🔊 Réécouter';};
+  speechSynthesis.speak(utt);
+}
+
+function normStr(s){
+  return s.trim().toLowerCase().replace(/['']/g,"'").replace(/\s+/g,' ');
+}
+
+function validerDictee(){
+  const inp=document.getElementById('dictee-input');
+  if(!inp.value.trim()){toast('Écris la phrase d\'abord !');inp.focus();return;}
+  if(blocked)return;
+  blocked=true;stopCTM();inp.disabled=true;
+  if(typeof speechSynthesis!=='undefined')speechSynthesis.cancel();
+
+  const typed=normStr(inp.value);
+  const expected=normStr(dicteePhrase);
+  const tw=typed.split(' ');
+  const cw=expected.split(' ');
+  let errCount=0;
+
+  // Build diff display
+  const diff=document.createElement('div');diff.className='diff-wrap';
+  const maxL=Math.max(tw.length,cw.length);
+  for(let i=0;i<maxL;i++){
+    if(i>0)diff.appendChild(document.createTextNode(' '));
+    const t=tw[i]||'';const c=cw[i]||'';
+    const sp=document.createElement('span');
+    if(t===c){sp.className='diff-ok';sp.textContent=t;}
+    else if(!t){errCount++;sp.className='diff-miss';sp.textContent='['+c+']';}
+    else{errCount++;sp.className='diff-err';sp.title='Attendu : '+c;sp.textContent=t;}
+    diff.appendChild(sp);
+  }
+  const zone=document.getElementById('dictee-zone');
+  zone.querySelectorAll('.diff-wrap,.diff-corr').forEach(el=>el.remove());
+  inp.insertAdjacentElement('afterend',diff);
+
+  if(errCount>0){
+    const corr=document.createElement('div');corr.className='diff-corr';
+    corr.innerHTML='<span style="color:var(--acc2);font-weight:700">Phrase correcte :</span> '+dicteePhrase;
+    diff.insertAdjacentElement('afterend',corr);
+  }
+
+  const ok=errCount===0;
+  const frac=errCount===0?1:errCount<=2?0.5:0;
+  const pts=Math.round(10*frac*(combo>=3?2:combo>=2?1.5:1));
+  if(ok)combo++;else{combo=0;storeErr(qs[qi]);}
+  ans.push(ok);
+  sessXP+=pts;
+  document.getElementById('xp-pill').textContent='+'+sessXP+' XP';
+  if(pts>0)flyPts('+'+pts);
+
+  showFb(ok,
+    ok?'✅ Parfait ! Aucune erreur.':
+    errCount<=2?`⚠️ ${errCount} erreur${errCount>1?'s':''}. Regarde les mots soulignés.`:
+    `❌ ${errCount} erreurs. La correction est affichée ci-dessus.`,
+    true);
+
+  setTimeout(()=>{qi++;showQ();},ok?1800:4500);
+}
+
+// ══════════════════════════════════════════════════
+// AI EXPLAIN
+function buildPrompt(q){
+  if(!q)return'Donne un conseil général de grammaire française en 2 phrases.';
+  if(q.t==='conj')return`Pourquoi "${fullForm(q.verb,q.tense,q.pi)}" est la bonne conjugaison de "${q.verb}" (${SUBJECTS[q.pi]}, ${TENSE_LBL[q.tense]}) ? Explique la règle en 2-3 phrases simples pour un élève.`;
+  if(q.t==='homo')return`Dans la phrase "${q.phrase}", pourquoi utilise-t-on "${q.correct}" ? Explique la règle des homophones en 2 phrases simples.`;
+  if(q.t==='adj')return`Pourquoi l'adjectif "${q.adjBase}" s'accorde en "${q.correct}" avec "${q.det} ${q.noun}" ? Explique la règle en 2 phrases.`;
+  if(q.t==='gn')return`Pourquoi l'adjectif dans "${q.det} ${q.nom} ___" s'écrit "${q.correct}" ? Explique la règle d'accord en 2 phrases.`;
+  if(q.t==='ortho')return`Pourquoi ce mot s'écrit "${q.correct}" ? Explique l'orthographe en 1-2 phrases simples.`;
+  if(q.t==='syno')return`Pourquoi "${q.correct}" est un synonyme de "${q.mot}" ? Nuance le sens en 2 phrases.`;
+  if(q.t==='anto')return`Pourquoi "${q.correct}" est le contraire de "${q.mot}" ? Explique en 1-2 phrases.`;
+  return`Explique pourquoi la bonne réponse est "${q.correct}" pour cette question de grammaire française. Sois bref.`;
+}
+
+async function askAI(){await callAI(curQ);}
+async function askAIForQ(idx){await callAI(qs[idx]||null);}
+
+async function callAI(q){
+  const key=localStorage.getItem('frAIKey');
+  if(!key){toast('⚙️ Configure ta clé API d\'abord');openSettings();return;}
+  document.getElementById('ai-content').innerHTML=
+    '<div class="ai-spinner"><div class="spinner-ring"></div>Analyse en cours…</div>';
+  document.getElementById('ai-modal').classList.add('open');
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':key,
+        'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:220,
+        messages:[{role:'user',content:buildPrompt(q)}]})
+    });
+    const data=await r.json();
+    if(data.error){document.getElementById('ai-content').textContent='Erreur : '+data.error.message;return;}
+    const txt=(data.content?.[0]?.text||'Aucune réponse.').trim();
+    document.getElementById('ai-content').textContent=txt;
+  }catch(e){
+    document.getElementById('ai-content').textContent='Erreur de connexion. Vérifie ta clé API et ta connexion internet.';
+  }
+}
+function closeAI(){document.getElementById('ai-modal').classList.remove('open');}
+
+// ══════════════════════════════════════════════════
+// KEYBOARD SHORTCUTS
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.getElementById('prof-modal').classList.contains('open'))saveProfModal();
+  if(e.key==='Escape'){
+    closeProfModal();closeSettings();closeAI();
+  }
+  // 1-4 for choices during game
+  if(['1','2','3','4'].includes(e.key)&&document.getElementById('game').classList.contains('active')){
+    const idx=parseInt(e.key)-1;
+    const btns=document.querySelectorAll('.ch');
+    if(btns[idx]&&!blocked)btns[idx].click();
+  }
+});
+
+// ══════════════════════════════════════════════════
+// INIT
+loadDB();
+// Migrate old data
+DB.p.forEach(p=>{
+  if(!p.errors)p.errors=[];
+  if(!p.typeStats)p.typeStats={};
+  if(p.synoOk===undefined)p.synoOk=0;
+  if(p.revisionDone===undefined)p.revisionDone=0;
+});
+saveDB();
+if(!DB.p.length){openProfModal();}
+renderHome();
+
+</script>
+</body>
+</html>
