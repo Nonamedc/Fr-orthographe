@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#060c18">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Français Posé 📚</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ SHOP ══ -->
+<!-- ══════════════════ ONBOARDING ══ -->
+<div id="onboarding">
+  <div class="ob-slides" id="ob-slides">
+
+    <div class="ob-slide on" id="ob-slide-0">
+      <div class="ob-ic">📚</div>
+      <div class="ob-h">Bienvenue dans<br>Français Posé !</div>
+      <div class="ob-p">L'application qui t'aide à maîtriser le français du CP à la Terminale — conjugaison, homophones, orthographe et bien plus.</div>
+    </div>
+
+    <div class="ob-slide" id="ob-slide-1">
+      <div class="ob-ic">🎯</div>
+      <div class="ob-h">Comment ça marche ?</div>
+      <div class="ob-p">Choisis un exercice, réponds aux questions, accumule de l'XP. Plus tu joues, plus ton niveau monte. Les erreurs reviennent en révision jusqu'à ce que tu les maîtrises !</div>
+    </div>
+
+    <div class="ob-slide" id="ob-slide-2">
+      <div class="ob-ic">⭐</div>
+      <div class="ob-h">Gagne des étoiles</div>
+      <div class="ob-p">Chaque bonne réponse te rapporte des ⭐ étoiles. Dépense-les en boutique pour débloquer des boosters, des thèmes, et des départements sur la <strong>Carte de France</strong> !</div>
+    </div>
+
+    <div class="ob-slide" id="ob-slide-3">
+      <div class="ob-ic">🗺️</div>
+      <div class="ob-h">Conquiers la France !</div>
+      <div class="ob-p">96 départements à débloquer. Chaque département débloqué révèle sa capitale, sa région, et un fait culturel. Peux-tu compléter toute la carte ?</div>
+    </div>
+
+    <div class="ob-slide" id="ob-slide-test">
+      <div class="ob-h" style="margin-bottom:4px">Test de niveau rapide</div>
+      <div class="ob-p" style="margin-bottom:12px">5 questions pour te placer automatiquement. Tu pourras changer à tout moment.</div>
+      <div class="lvl-test-prog" id="lvt-prog"></div>
+      <div class="lvl-test-wrap" id="lvt-wrap"></div>
+    </div>
+
+  </div>
+  <div class="ob-dots" id="ob-dots"></div>
+  <div class="ob-btns">
+    <button class="ob-btn-skip" onclick="skipOnboarding()">Passer</button>
+    <button class="ob-btn-next" id="ob-next" onclick="obNext()">Suivant →</button>
+  </div>
+</div>
+
+<!-- ══════════════════ CARTE DE FRANCE ══ -->
+<div id="carte-modal">
+  <div class="carte-hd">
+    <button class="carte-close" onclick="closeCarte()">✕</button>
+    <h2>🗺️ Carte de France</h2>
+    <div class="ch-stars" id="carte-stars-hd">⭐ 0</div>
+  </div>
+  <div class="carte-body">
+    <div class="carte-prog">
+      <div style="flex:1">
+        <div class="carte-prog-txt">Départements débloqués</div>
+        <div class="carte-prog-bar"><div class="carte-prog-fill" id="carte-prog-fill" style="width:0%"></div></div>
+      </div>
+      <div class="carte-prog-num" id="carte-prog-num">0/96</div>
+    </div>
+    <div class="carte-legend">
+      <div class="cl-item"><div class="cl-dot" style="background:#182d4f"></div> Verrouillé</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#00c9a7"></div> Débloqué</div>
+      <div class="cl-item"><div class="cl-dot" style="background:#f59e0b"></div> Maîtrisé</div>
+    </div>
+    <div class="carte-svg-wrap" style="position:relative">
+      <div id="carte-spinner" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:var(--bg2);border-radius:14px;z-index:2">
+        <div class="carte-spin-ring"></div>
+        <div style="font-size:.72rem;color:var(--txt2)">Chargement de la carte…</div>
+      </div>
+      <svg id="carte-svg" viewBox="0 0 500 520" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block"></svg>
+    </div>
+    <div class="dept-info" id="dept-info">
+      <div style="color:var(--txt2);font-size:.78rem">Clique sur un département pour le voir</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ MODE PARENT ══ -->
+<div id="parent-modal">
+  <div class="parent-hd">
+    <button class="parent-close" onclick="closeParent()">✕</button>
+    <h2>👨‍👩‍👧 Mode Parent / Prof</h2>
+  </div>
+  <div id="parent-pin-screen" class="parent-body" style="align-items:center;justify-content:center">
+    <div class="pin-wrap">
+      <div class="pin-title" id="pin-title">Entrez votre code PIN</div>
+      <div class="pin-sub" id="pin-sub">Accès réservé aux parents et enseignants</div>
+      <div class="pin-dots" id="pin-dots"></div>
+      <div class="pin-pad" id="pin-pad"></div>
+      <div id="pin-msg" style="font-size:.7rem;color:#ef4444;min-height:18px"></div>
+    </div>
+  </div>
+  <div id="parent-dashboard" class="parent-body" style="display:none">
+    <div class="parent-section">
+      <h3>👤 Profil suivi</h3>
+      <div class="parent-prof-sel" id="pps-list"></div>
+      <div class="parent-stat-grid" id="psg"></div>
+      <div class="parent-bar-section" id="pbars"></div>
+    </div>
+    <div class="parent-section">
+      <h3>📅 Historique récent</h3>
+      <table class="parent-hist"><thead><tr>
+        <th>Date</th><th>Exercice</th><th>Score</th><th>XP</th>
+      </tr></thead><tbody id="parent-hist-body"></tbody></table>
+    </div>
+    <div class="parent-section">
+      <h3>⚠️ Points faibles</h3>
+      <div id="parent-weak" style="font-size:.75rem;color:var(--txt2)"></div>
+    </div>
+    <div class="parent-section">
+      <h3>🎚️ Niveaux autorisés</h3>
+      <div class="parent-alert">Restreindre les niveaux affichés pour cet élève.</div>
+      <div class="parent-lvl-grid" id="parent-lvl-grid" style="margin-top:10px"></div>
+      <button onclick="saveParentLvls()" style="margin-top:10px;background:var(--acc);color:#000;border:none;border-radius:10px;padding:8px 16px;font-size:.78rem;font-weight:800;cursor:pointer;width:100%">💾 Enregistrer</button>
+    </div>
+    <div class="parent-section">
+      <h3>🔑 Changer le PIN</h3>
+      <button onclick="startChangePin()" style="background:var(--bg3);border:1.5px solid var(--bg4);border-radius:10px;padding:8px 16px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer;width:100%">Changer le code PIN</button>
+    </div>
+    <button onclick="closeParent()" style="background:var(--bg3);border:1.5px solid var(--bg4);border-radius:12px;padding:12px;font-size:.82rem;font-weight:700;color:var(--txt2);cursor:pointer">Fermer le mode parent</button>
+  </div>
+</div>
+
+<div id="shop-modal">
+  <div class="shop-hd">
+    <button class="shop-close" onclick="closeShop()">✕</button>
+    <h2>🛒 Boutique</h2>
+    <div class="shop-stars-hd" id="shop-stars-hd">⭐ 0</div>
+  </div>
+  <div class="shop-tabs">
+    <button class="shop-tab on" onclick="shopTab('boosters')">⚡ Boosters</button>
+    <button class="shop-tab" onclick="shopTab('themes')">🎨 Thèmes</button>
+    <button class="shop-tab" onclick="shopTab('avatars')">🎭 Avatars</button>
+  </div>
+  <div class="shop-body">
+    <div class="shop-section on" id="shop-sec-boosters"></div>
+    <div class="shop-section" id="shop-sec-themes"></div>
+    <div class="shop-section" id="shop-sec-avatars"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="ctm-bar"></div>
+
+<!-- ══════════════════════════════════════ PROFILE ══ -->
+<div id="profile" class="screen">
+  <div class="ps-hdr">
+    <button class="ps-back" onclick="showScreen('home')">← Retour</button>
+  </div>
+  <div class="ps-hero">
+    <div class="ps-av-wrap">
+      <span class="ps-av" id="ps-av">🧒</span>
+      <svg class="ps-xp-ring" width="90" height="90" id="ps-ring">
+        <circle cx="45" cy="45" r="38" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="4"/>
+        <circle id="ps-ring-fill" cx="45" cy="45" r="38" fill="none" stroke="url(#ringGrad)"
+          stroke-width="4" stroke-linecap="round" stroke-dasharray="0 239"/>
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#00c9a7"/>
+            <stop offset="100%" stop-color="#818cf8"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="ps-name" id="ps-name">—</div>
+    <div class="ps-lv" id="ps-lv">—</div>
+    <div class="ps-xp-bar-wrap"><div class="ps-xp-bar" id="ps-xp-bar" style="width:0%"></div></div>
+    <div class="ps-xp-txt" id="ps-xp-txt"></div>
+  </div>
+  <div class="ps-kpis" id="ps-kpis"></div>
+  <div class="ps-section">
+    <div class="ps-section-h">Progression XP</div>
+    <div id="ps-sparkline" style="padding:0 0 4px"></div>
+  </div>
+  <div class="ps-section">
+    <div class="ps-section-h">Précision par type</div>
+    <div id="ps-typestats"></div>
+  </div>
+  <div class="ps-section">
+    <div class="ps-section-h">Badges</div>
+  </div>
+  <div class="ps-bdg-grid" id="ps-bdgs"></div>
+  <div class="ps-section">
+    <div class="ps-section-h">Historique récent</div>
+    <div id="ps-hist"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ HOME ══ -->
+<div id="home" class="screen active">
+  <div class="home-header">
+    <div class="logo-area">
+      <h1 class="display">📚 Français Posé</h1>
+      <div class="sub">Grammaire &amp; Conjugaison · CP → Terminale</div>
+    </div>
+    <div class="hdr-btns">
+      <button class="snd-btn" id="snd-btn" onclick="toggleSound()" title="Son">🔊</button>
+      <button class="icon-btn" onclick="openCarte()" title="Carte de France">🗺️</button>
+      <button class="icon-btn shop-btn" onclick="openShop()" title="Boutique">🛒</button>
+      <button class="icon-btn" onclick="openSettings()" title="Paramètres">⚙️</button>
+    </div>
+  </div>
+
+  <div class="sect">Profils</div>
+  <div class="profiles-wrap" id="profiles-wrap"></div>
+
+  <div id="rev-banner" class="rev-banner" onclick="startRevision()">
+    <div class="rev-icon">🔁</div>
+    <div class="rev-text">
+      <div class="rt" id="rev-title">Réviser les erreurs</div>
+      <div class="rs" id="rev-sub">Questions à retravailler</div>
+    </div>
+    <button class="rev-cta">Réviser →</button>
+  </div>
+
+  <div id="weak-section" style="display:none">
+    <div class="sect">Points faibles</div>
+    <div class="weak-grid" id="weak-grid"></div>
+  </div>
+
+  <div class="sect">Niveau scolaire</div>
+  <div class="lvl-row" id="lvl-row"></div>
+
+  <div class="sect">Exercice</div>
+  <div class="ex-grid" id="ex-grid"></div>
+
+  <div class="sect">Options</div>
+  <div class="opts-box">
+    <div class="opt-row">
+      <span class="opt-lbl">Questions</span>
+      <div class="opt-btns" id="opt-q">
+        <button class="opb on" onclick="setOpt('q',5,this)">5</button>
+        <button class="opb" onclick="setOpt('q',10,this)">10</button>
+        <button class="opb" onclick="setOpt('q',20,this)">20</button>
+        <button class="opb" onclick="setOpt('q',0,this)">∞</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Chrono</span>
+      <div class="opt-btns" id="opt-c">
+        <button class="opb on" onclick="setOpt('c','libre',this)">Libre</button>
+        <button class="opb" onclick="setOpt('c','30',this)">⚡ 30s</button>
+        <button class="opb" onclick="setOpt('c','60',this)">⚡ 60s</button>
+      </div>
+    </div>
+    <div class="opt-row">
+      <span class="opt-lbl">Niveaux</span>
+      <div class="opt-btns">
+        <button class="opb on" id="opt-rnd" onclick="rndLvl()">🎲 Aléatoire</button>
+        <button class="opb" onclick="allLvls()">Tout</button>
+      </div>
+    </div>
+    <div class="opt-row" id="opt-verb-row">
+      <span class="opt-lbl">Verbe</span>
+      <div class="opt-btns">
+        <button class="opb on" id="opt-verb-any" onclick="setTargetVerb(null,this)">Tous</button>
+        <button class="opb" id="opt-verb-pick" onclick="openVerbModal()">🎯 Cibler…</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Cibler un verbe -->
+<div class="overlay" id="verb-modal" onclick="if(event.target===this)closeVerbModal()">
+  <div class="modal">
+    <h2>🎯 Cibler un verbe</h2>
+    <input type="text" id="verb-search" placeholder="Rechercher… (ex: être, aller)" maxlength="20"
+      oninput="filterVerbs(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+    <div class="verb-list" id="verb-list"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeVerbModal()">Annuler</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Nouveau profil -->
+<div class="overlay" id="prof-modal" onclick="if(event.target===this)closeProfModal()">
+  <div class="modal">
+    <h2>Nouveau profil</h2>
+    <input type="text" id="pname-inp" placeholder="Ton prénom" maxlength="14"
+      onkeydown="if(event.key==='Enter')saveProfModal()">
+    <div class="av-grid" id="av-grid"></div>
+    <div class="m-btns">
+      <button class="btn-can" onclick="closeProfModal()">Annuler</button>
+      <button class="btn-go" onclick="saveProfModal()">Créer ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Paramètres -->
+<div class="overlay" id="settings-modal" onclick="if(event.target===this)closeSettings()">
+  <div class="modal">
+    <h2>⚙️ Paramètres</h2>
+    <label class="set-lbl">Aide IA — Clé API Anthropic</label>
+    <div class="hint-txt">Entre ta clé API pour obtenir des explications après chaque erreur. Elle est stockée uniquement sur ton appareil.</div>
+    <div class="key-row">
+      <input type="password" id="api-key-inp" placeholder="sk-ant-…">
+      <button onclick="saveKey()">OK</button>
+    </div>
+    <label class="set-lbl" style="margin-top:8px">Supprimer un profil</label>
+    <div id="del-prof-list" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px"></div>
+    <div class="m-btns">
+      <button class="btn-parent" onclick="closeSettings();openParent()">👨‍👩‍👧 Mode Parent / Prof</button>
+      <button class="btn-can" onclick="closeSettings()">Fermer</button>
+      <button class="btn-danger" onclick="nukeAll()">Tout effacer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Explication IA -->
+<div class="overlay" id="ai-modal" onclick="if(event.target===this)closeAI()">
+  <div class="modal ai-modal">
+    <div class="ai-head"><span>🤖</span><h3>Explication</h3></div>
+    <div class="ai-content" id="ai-content">
+      <div class="ai-spinner"><div class="spinner-ring"></div>Analyse en cours…</div>
+    </div>
+    <button class="ai-close-btn" onclick="closeAI()">Compris ✓</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ GAME ══ -->
+<div id="game" class="screen">
+  <div class="game-top">
+    <div class="g-label" id="g-label"></div>
+    <div class="g-chips">
+      <div class="xp-pill" id="xp-pill">+0 XP</div>
+      <div class="combo-pill" id="combo-pill">🔥 ×2</div>
+    </div>
+  </div>
+  <div class="booster-bar" id="booster-bar"></div>
+  <div class="ctm-row" id="ctm-row">
+    <div class="ctm-disp">⏱ <span id="ctm-n">30</span>s</div>
+  </div>
+  <div class="prog-row">
+    <div class="dots" id="dots"></div>
+    <div class="prog-txt" id="prog-txt"></div>
+  </div>
+  <div class="q-wrap">
+    <div class="q-card" id="q-card">
+      <div class="q-type" id="q-type"></div>
+      <div class="q-main" id="q-main"></div>
+      <div class="q-hint" id="q-hint"></div>
+    </div>
+  </div>
+  <div class="fb" id="fb"></div>
+  <div class="ch-grid" id="ch-grid"></div>
+  <div class="dictee-zone" id="dictee-zone">
+    <div class="dictee-listen">
+      <button class="btn-listen" id="btn-listen" onclick="speakDictee()">🔊 Écouter la phrase</button>
+      <button class="btn-listen-again" id="btn-relisten" style="display:none" onclick="speakDictee()">🔁</button>
+    </div>
+    <div class="accents-bar" id="accents-bar"></div>
+    <textarea class="dictee-input" id="dictee-input" placeholder="Écris la phrase ici…" rows="3"
+      autocomplete="off" autocorrect="off" autocapitalize="sentences" spellcheck="false"></textarea>
+    <div style="display:flex;gap:8px;width:100%">
+      <button class="btn-valider" onclick="validerDictee()" style="flex:1">Valider ✓</button>
+      <button onclick="passerDictee()" style="flex:0 0 auto;background:var(--bg3);border:1.5px solid var(--bg4);border-radius:12px;padding:12px 14px;font-size:.78rem;font-weight:700;color:var(--txt2);cursor:pointer">⏭ Passer<br><small style="font-size:.65rem;color:var(--red)">-3 pts</small></button>
+    </div>
+  </div>
+  <button class="stop-btn" id="stop-btn" onclick="stopInfini()">⏹ Terminer la session</button>
+</div>
+
+<!-- ══════════════════════════════════════ RESULT ══ -->
+<div id="result" class="screen">
+  <canvas class="confetti-c" id="confetti-c"></canvas>
+  <div class="res-header">
+    <div class="stars" id="stars"></div>
+    <div class="score-num display" id="score-num"></div>
+    <div class="score-sub" id="score-sub"></div>
+    <div class="res-tags" id="res-tags"></div>
+  </div>
+  <div class="tabs">
+    <div class="tab on" onclick="switchTab('corr',this)">Correction</div>
+    <div class="tab" onclick="switchTab('stats',this)">Stats</div>
+    <div class="tab" onclick="switchTab('rank',this)">Classement</div>
+    <div class="tab" onclick="switchTab('bdg',this)">Badges</div>
+  </div>
+  <div class="pane on" id="pane-corr"></div>
+  <div class="pane" id="pane-stats"></div>
+  <div class="pane" id="pane-rank"></div>
+  <div class="pane" id="pane-bdg"></div>
+  <div class="res-btns">
+    <button class="btn-replay" onclick="replayGame()">🔄 Rejouer</button>
+    <button class="btn-share" onclick="exportResult()">📋 Partager</button>
+    <button class="btn-home" onclick="goHome()">🏠 Accueil</button>
+  </div>
+</div>
+
+<!-- Scripts : data en premier, puis app -->
+
+
+
+
+<script src="data.js"></script>
+<script src="utils.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
