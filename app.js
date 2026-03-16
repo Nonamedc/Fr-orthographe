@@ -396,6 +396,46 @@ function genQ(opId,attempt=0){
       choices:shuffle([correct,...wrongs.slice(0,3)]),opId};
   }
 
+
+  // ── PONCTUATION ──────────────────────────────────
+  if(opId==='ponct'){
+    const m=maxLvlI();
+    const pool=PONCT.filter(e=>lvlIdx(e[3])<=m);
+    if(!pool.length)return genQ(opId,attempt+1);
+    const e=shuffle([...pool])[0];
+    const[phrase,correct,wrongs,lvl]=e;
+    const qKey='ponct:'+phrase;
+    if(recentKeys.has(qKey)&&attempt<6)return genQ(opId,attempt+1);
+    recentKeys.add(qKey);
+    return{t:'ponct',phrase,correct,choices:shuffle([correct,...wrongs.slice(0,3)]),opId};
+  }
+
+  // ── DÉFINITIONS ──────────────────────────────────
+  if(opId==='defin'){
+    const m=maxLvlI();
+    const pool=DEFIN.filter(e=>lvlIdx(e[3])<=m);
+    if(!pool.length)return genQ(opId,attempt+1);
+    const e=shuffle([...pool])[0];
+    const[defin,correct,wrongs,lvl]=e;
+    const qKey='defin:'+defin;
+    if(recentKeys.has(qKey)&&attempt<6)return genQ(opId,attempt+1);
+    recentKeys.add(qKey);
+    return{t:'defin',defin,correct,choices:shuffle([correct,...wrongs.slice(0,3)]),opId};
+  }
+
+  // ── NIVEAU DE LANGUE ─────────────────────────────
+  if(opId==='niveau'){
+    const m=maxLvlI();
+    const pool=NIVEAU.filter(e=>lvlIdx(e[3])<=m);
+    if(!pool.length)return genQ(opId,attempt+1);
+    const e=shuffle([...pool])[0];
+    const[mot,correct,wrongs,lvl]=e;
+    const qKey='niveau:'+mot;
+    if(recentKeys.has(qKey)&&attempt<6)return genQ(opId,attempt+1);
+    recentKeys.add(qKey);
+    return{t:'niveau',mot,correct,choices:shuffle([correct,...wrongs]),opId};
+  }
+
   const m=maxLvlI();
 
   // ── HOMOPHONES ─────────────────────────────────
@@ -1148,6 +1188,9 @@ function buildCorr(){
     const ok=ans[i];let qa='',qb='';
     if(q.t==='conj'){qa=`${q.verb} (${SUBJECTS[q.pi]}, ${TENSE_LBL[q.tense]})`;qb=fullForm(q.verb,q.tense,q.pi);}
     else if(q.t==='homo'){qa=q.phrase;qb=q.correct;}
+    else if(q.t==='ponct'){qa=q.phrase.replace('___','___');qb=q.correct;}
+    else if(q.t==='defin'){qa=q.defin;qb=q.correct;}
+    else if(q.t==='niveau'){qa='« '+q.mot+' »';qb=q.correct;}
     else if(q.t==='adj'){qa=`${q.det} ${q.noun} + ${q.adjBase}`;qb=q.correct;}
     else if(q.t==='gn'){qa=`${q.det} ${q.nom} ___`;qb=q.correct;}
     else if(q.t==='nature'){qa=q.phrase;qb=q.correct;}
