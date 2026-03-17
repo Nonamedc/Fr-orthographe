@@ -30,6 +30,10 @@ const OPS=[
   {id:'phrase_corr',lbl:'Corriger la phrase',sub:"Trouve et corrige l'erreur",ic:'🔍',min:'CE2'},
   {id:'genre',lbl:'Genre des noms',sub:'Masculin ou féminin ?',ic:'⚖️',min:'CP'},
   {id:'accents',lbl:'Accents',sub:'é è ê à â û î…',ic:'✍️',min:'CP'},
+  {id:'ponctuation',lbl:'Ponctuation',sub:'. ? !…',ic:'?',min:'CP'},
+  {id:'Définitions',lbl:'Définitions',sub:'',ic:'?',min:'CP'},
+  {id:'niveaux',lbl:'Niveaux',sub:'',ic:'?',min:'CP'},
+
 ];
 
 // ── Homophones ── [phrase_avec_trou, correct, [faux], minLvl]
