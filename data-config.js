@@ -29,9 +29,9 @@ const OPS=[
   {id:'dictee',lbl:'Dictée',sub:'Écoute et écris la phrase',ic:'🎙',min:'CE1'},
   {id:'phrase_corr',lbl:'Corriger la phrase',sub:"Trouve et corrige l'erreur",ic:'🔍',min:'CE2'},
   {id:'genre',lbl:'Genre des noms',sub:'Masculin ou féminin ?',ic:'⚖️',min:'CP'},
-  {id:'ponctuation',lbl:'Ponctuation',sub:'.,?!:;"()',ic:'❗',min:'CE1'},
-  {id:'definition',lbl:'Définitions',sub:'Comprendre les mots',ic:'📚',min:'CE2'},
-  {id:'niveau_langue',lbl:'Niveau de langue',sub:'familier / courant / soutenu',ic:'🗣',min:'CM1'},
+  {id:'ponct',lbl:'Ponctuation',sub:'.,?!:;"()',ic:'❗',min:'CE1'},
+  {id:'defin',lbl:'Définitions',sub:'Comprendre les mots',ic:'📚',min:'CE2'},
+  {id:'niveau',lbl:'Niveau de langue',sub:'familier / courant / soutenu',ic:'🗣',min:'CM1'},
 ];
 
 // ── Homophones ── [phrase_avec_trou, correct, [faux], minLvl]
