@@ -922,7 +922,7 @@ function buildCard(q){
     document.getElementById('ch-grid').style.display='';
   }else if(q.t==='ponct'){
     type.textContent='❗ Ponctuation';
-    main.innerHTML=q.phrase.replace('___','<span class="q-blank">___</span>');
+    main.innerHTML=q.phrase.replace(/___/g,'<span class="q-blank">___</span>');
     hint.textContent='Quel signe de ponctuation complète la phrase ?';
     document.getElementById('ch-grid').style.display='';
   }else if(q.t==='defin'){
