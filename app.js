@@ -920,6 +920,21 @@ function buildCard(q){
     main.innerHTML=`Quel est le genre du nom <em>${q.mot}</em> ?`;
     hint.innerHTML='<span style="color:var(--txt2)"><em>le/un</em> → masculin · <em>la/une</em> → féminin</span>';
     document.getElementById('ch-grid').style.display='';
+  }else if(q.t==='ponct'){
+    type.textContent='❗ Ponctuation';
+    main.innerHTML=q.phrase.replace('___','<span class="q-blank">___</span>');
+    hint.textContent='Quel signe de ponctuation complète la phrase ?';
+    document.getElementById('ch-grid').style.display='';
+  }else if(q.t==='defin'){
+    type.textContent='📚 Définitions';
+    main.innerHTML=`<em>${q.defin}</em>`;
+    hint.textContent='Quel mot correspond à cette définition ?';
+    document.getElementById('ch-grid').style.display='';
+  }else if(q.t==='niveau'){
+    type.textContent='🗣 Niveau de langue';
+    main.innerHTML=`Quel est le niveau de langue de <em>« ${q.mot} »</em> ?`;
+    hint.textContent='familier · courant · soutenu · argot';
+    document.getElementById('ch-grid').style.display='';
   }
   if(q.t==='phrase_corr') buildChoices(q.choices, q.correction);
   else buildChoices(q.choices, q.correct);
